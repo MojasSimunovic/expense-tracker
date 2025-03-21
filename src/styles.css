@@ -1,1 +1,35 @@
 /* You can add global styles to this file, and also import other style files */
+@import "bootstrap/dist/css/bootstrap.min.css";
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+::root {
+  min-height: max-content;
+}
+
+h1 {
+  margin-bottom: 1.5em;
+}
+
+h2 {
+  margin-bottom: 2em;
+}
+
+.wrapper {
+  height: 100%;
+  display: flex;
+  min-height: max-content;
+}
+
+.content-container {
+  padding: 2em;
+  flex: 1 1 auto;
+  text-align: center;
+  justify-content: center;
+  min-height: fit-content;
+}

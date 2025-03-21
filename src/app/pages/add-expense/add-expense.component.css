@@ -1,0 +1,53 @@
+form {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 2em;
+  border-radius: 20px;
+  box-shadow: 3px 4px 8px lightgrey;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  margin-bottom: 1.5em;
+  flex: 1 1 auto;
+}
+
+label {
+  text-align: left;
+  margin-bottom: 0.5em;
+}
+
+input,
+select {
+  border-radius: 8px;
+  padding: 1em;
+  border: 0.5px solid lightblue;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.form-row {
+  display: flex;
+  gap: 2em;
+  flex: 1 1 auto;
+}
+
+button {
+  border-radius: 12px !important;
+}
+
+button:not(:disabled) {
+  color: #111111 !important;
+}
+
+button .mdc-button__label {
+  color: #111111 !important;
+}
+
+.text-danger {
+  margin-top: 0.5em;
+  color: red;
+  font-size: 0.85em;
+  text-align: center;
+}

@@ -1,0 +1,22 @@
+.nav-list {
+  max-width: 100px;
+  min-height: 100%;
+  padding: 1.75em;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  background-color: lightgrey;
+}
+
+.nav-list a {
+  color: #111111;
+  transition: 0.4s ease;
+}
+
+.link-active {
+  color: goldenrod !important;
+}
+
+.nav-list a:hover {
+  color: #615252;
+}

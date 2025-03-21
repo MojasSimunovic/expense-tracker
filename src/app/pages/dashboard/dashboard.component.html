@@ -1,0 +1,77 @@
+<h2>Dashboard</h2>
+<h5>
+  Filter by category:
+  <select (change)="setFilter($event.target)">
+    <option value="All">All</option>
+    <option value="Tech">Tech</option>
+    <option value="Food">Food</option>
+    <option value="Clothes">Clothes</option>
+    <option value="Entertainment">Entertainment</option>
+    <option value="Cosmetics">Cosmetics</option>
+    <option value="Utilities">Utilities</option>
+  </select>
+</h5>
+<ng-container *ngIf="expenses$ | async as expenses">
+  <table
+    class="table table-striped"
+    *ngIf="expenses && expenses.length > 0; else noExpenses"
+  >
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Item title</th>
+        <th>Category</th>
+        <th>Quantity</th>
+        <th>Price</th>
+        <th>Total Price</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let expense of filteredExpenses">
+        <ng-container>
+          <td>
+            <span>{{ expense.date | date : "shortDate" }}</span>
+          </td>
+          <td>
+            <span>{{ expense.title }}</span>
+          </td>
+          <td>
+            <span>{{ expense.category }}</span>
+          </td>
+          <td>
+            <span>{{ expense.quantity }}</span>
+          </td>
+          <td>
+            <span>{{ expense.price }}</span>
+          </td>
+          <td>
+            <span>{{ expense.quantity * expense.price }}</span>
+          </td>
+
+          <td>
+            <button
+              class="btn btn-sm btn-danger m-1"
+              (click)="onDelete(expense.id)"
+            >
+              Delete
+            </button>
+            <button
+              class="btn btn-sm btn-secondary m-1"
+              (click)="onEdit(expense)"
+            >
+              Edit
+            </button>
+          </td>
+        </ng-container>
+      </tr>
+    </tbody>
+  </table>
+</ng-container>
+
+<ng-template #noExpenses>
+  <h3>No expenses, add new expense</h3>
+  <button (click)="navigateToNew()" class="btn btn-sm btn-secondary m-1">
+    Add expense
+  </button>
+</ng-template>

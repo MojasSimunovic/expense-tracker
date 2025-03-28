@@ -1,0 +1,46 @@
+<div class="container">
+  <h2 class="text-center">Scanned bills</h2>
+    @if (bills()) {
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>
+              Date
+            </th>
+            <th>
+              Vendor
+            </th>
+            <th>
+              Link to bill
+            </th>
+            <th>
+              Actions
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          @for(bill of bills();track bill.id) {
+            <tr>
+              <td>
+                <span>{{ convertTimestampToDate(bill.date) | date:'dd/MM/yy' }}</span>
+              </td>
+              <td>
+                <span>{{ bill.vendor }}</span>
+              </td>
+              <td>
+                <a [href]="bill.url" target="_blank" class="btn btn-warning link-external">
+                  <mat-icon>link</mat-icon>
+                  Link to Bill
+                </a>
+              </td>
+              <td>
+                <button class="btn btn-danger" (click)="onRemoveBill(bill.id)">Remove</button>
+              </td>
+            </tr>
+
+          }
+        </tbody>
+      </table>
+    }
+
+</div>

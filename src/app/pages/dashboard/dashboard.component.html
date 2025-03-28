@@ -1,77 +1,138 @@
-<h2>Dashboard</h2>
-<h5>
-  Filter by category:
-  <select (change)="setFilter($event.target)">
-    <option value="All">All</option>
-    <option value="Tech">Tech</option>
-    <option value="Food">Food</option>
-    <option value="Clothes">Clothes</option>
-    <option value="Entertainment">Entertainment</option>
-    <option value="Cosmetics">Cosmetics</option>
-    <option value="Utilities">Utilities</option>
-  </select>
-</h5>
-<ng-container *ngIf="expenses$ | async as expenses">
-  <table
-    class="table table-striped"
-    *ngIf="expenses && expenses.length > 0; else noExpenses"
-  >
-    <thead>
-      <tr>
-        <th>Date</th>
-        <th>Item title</th>
-        <th>Category</th>
-        <th>Quantity</th>
-        <th>Price</th>
-        <th>Total Price</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let expense of filteredExpenses">
-        <ng-container>
-          <td>
-            <span>{{ expense.date | date : "shortDate" }}</span>
-          </td>
-          <td>
-            <span>{{ expense.title }}</span>
-          </td>
-          <td>
-            <span>{{ expense.category }}</span>
-          </td>
-          <td>
-            <span>{{ expense.quantity }}</span>
-          </td>
-          <td>
-            <span>{{ expense.price }}</span>
-          </td>
-          <td>
-            <span>{{ expense.quantity * expense.price }}</span>
-          </td>
+<div class="container">
+  <h2 class="text-center">Dashboard</h2>
+  <div class="d-flex justify-content-between align-items-center">
+    <div class="search-div">
+      <h5>Search by name:</h5>
+      <input id="search-input" class="form-control" type="text" placeholder="Search..." [(ngModel)]="searchInput" />
+    </div>
+    <div class="dashboard-filters">
+      <div class="dashboard-filter">
+        <h5>
+          Filter by month:
+        </h5>
+        <select class="form-select"
+        (change)="setFilterMonth($event.target)"
+        [(ngModel)]="currentMonth"
+        >
+          <option value="01">January</option>
+          <option value="02">February</option>
+          <option value="03">March</option>
+          <option value="04">April</option>
+          <option value="05">May</option>
+          <option value="06">June</option>
+          <option value="07">July</option>
+          <option value="08">August</option>
+          <option value="09">September</option>
+          <option value="10">October</option>
+          <option value="11">November</option>
+          <option value="12">December</option>
+        </select>
+      </div>
+      <div class="dashboard-filter">
+        <h5>Filter by category</h5>
+        <select class="form-select" (change)="setFilter($event.target)">
+          <option value="All">All</option>
+          <option value="Tech">Tech</option>
+          <option value="Food">Food</option>
+          <option value="Clothes">Clothes</option>
+          <option value="Entertainment">Entertainment</option>
+          <option value="Cosmetics">Cosmetics</option>
+          <option value="Utilities">Utilities</option>
+          <option value="Transport">Transport</option>
+          <option value="Transport">Unknown</option>
+        </select>
+      </div>
+    </div>
+  </div>
 
-          <td>
-            <button
-              class="btn btn-sm btn-danger m-1"
-              (click)="onDelete(expense.id)"
-            >
-              Delete
-            </button>
-            <button
-              class="btn btn-sm btn-secondary m-1"
-              (click)="onEdit(expense)"
-            >
-              Edit
-            </button>
-          </td>
-        </ng-container>
-      </tr>
-    </tbody>
-  </table>
-</ng-container>
+  <ng-container *ngIf="expenses()">
+    <table
+      class="table table-striped"
+      *ngIf="filteredExpenses().length > 0; else noExpenses"
+    >
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Item title</th>
+          <th>Category</th>
+          <th>Quantity</th>
+          <th>Price</th>
+          <th>Total Price (RSD)</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let expense of filteredExpenses()">
+          <ng-container>
+            <td>
+              <span>{{ expense.date | date : "shortDate" }}</span>
+            </td>
+            <td>
+              <span>{{ expense.title }}</span>
+            </td>
+            <td>
+              <select class="form-select" [(ngModel)]="expense.category" (change)="updateExpense(expense)">
+                <option value="Unknown" selected hidden>{{ expense.category }}</option>
+                <option value="Food">Food</option>
+                <option value="Tech">Tech</option>
+                <option value="Clothes">Clothes</option>
+                <option value="Entertainment">Entertainment</option>
+                <option value="Cosmetics">Cosmetics</option>
+                <option value="Utilities">Utilities</option>
+                <option value="Transport">Transport</option>
+                <option value="Transport">Unknown</option>
+              </select>
+              
+            </td>
+            <td>
+              <span>{{ expense.quantity }}</span>
+            </td>
+            <td>
+              <span>{{ expense.price }}</span>
+            </td>
+            <td>
+              <span>{{ expense.quantity * expense.price }}</span>
+            </td>
 
-<ng-template #noExpenses>
-  <h3>No expenses, add new expense</h3>
-  <button (click)="navigateToNew()" class="btn btn-sm btn-secondary m-1">
-    Add expense
-  </button>
-</ng-template>
+            <td>
+              <button
+                class="btn btn-sm btn-danger m-1"
+                (click)="onDelete(expense.id)"
+              >
+                Delete
+              </button>
+              <button
+                class="btn btn-sm btn-secondary m-1"
+                (click)="onEdit(expense)"
+              >
+                Edit
+              </button>
+            </td>
+          </ng-container>
+        </tr>
+      </tbody>
+      <tfoot class="table-secondary">
+        <tr>
+          <th scope="row">Total</th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <td>
+            <strong>{{ totalAmount() | currency: 'RSD ' }}</strong>
+          </td>
+          <th></th>
+        </tr>
+      </tfoot>
+    </table>
+  </ng-container>
+
+  <ng-template #noExpenses>
+    <div class="text-center">
+      <h3 class="mb-3">No expenses in this category, add new expense</h3>
+      <button (click)="navigateToNew()" class="btn btn-sm btn-secondary m-1">
+        Add expense
+      </button>
+    </div>
+  </ng-template>
+</div>

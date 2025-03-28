@@ -45,7 +45,6 @@ export class AddExpenseComponent implements OnInit {
     });
     let id = this.activatedRoute.snapshot.paramMap.get('id');
     if (id) {
-      console.log(id);
       this.expenseService.getExpense(id).subscribe((expense) => {
         this.expenseForm.patchValue(expense);
       });

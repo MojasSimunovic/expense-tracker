@@ -1,0 +1,15 @@
+table {
+  box-shadow: 4px 2px 8px lightgray;
+  td {
+    vertical-align: middle;
+  }
+}
+.link-external {
+  display: flex;
+  align-items: center;
+  width: max-content;
+  padding-inline: 1em 2em;
+  mat-icon {
+    margin-right: 0.35em;
+  }
+}

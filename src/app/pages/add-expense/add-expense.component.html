@@ -1,5 +1,5 @@
-<h2>Add a new expense</h2>
-<form [formGroup]="expenseForm" (ngSubmit)="onSubmit()">
+<h2 class="text-center">Add a new expense</h2>
+<form class="text-center" [formGroup]="expenseForm" (ngSubmit)="onSubmit()">
   <div class="form-field">
     <label for="title">Item title</label>
     <input
@@ -29,6 +29,9 @@
       <option value="Clothes">Clothes</option>
       <option value="Entertainment">Entertainment</option>
       <option value="Cosmetics">Cosmetics</option>
+      <option value="Utilities">Utilities</option>
+      <option value="Transport">Transport</option>
+      <option value="Transport">Unknown</option>
     </select>
     <small
       class="text-danger"

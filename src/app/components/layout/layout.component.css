@@ -1,0 +1,12 @@
+:root {
+  min-height: 100vh;
+}
+
+.container-main {
+  min-height: max-content;
+  padding-bottom: 3em;
+}
+
+.link-active {
+  color: #ffffff;
+}

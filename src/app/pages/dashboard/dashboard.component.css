@@ -1,8 +1,28 @@
 table {
-  max-width: 1200px;
+  max-width: 100%;
+  border-radius: 20px;
   margin: 0 auto;
   box-shadow: 4px 2px 8px lightgray;
-  border-radius: 12px;
+  border-radius: 20px;
+}
+
+.search-div {
+  display: flex;
+  align-items: center;
+}
+
+.dashboard-filters {
+  display: flex;
+  gap: 5em;
+}
+
+.dashboard-filter {
+  display: flex;
+  align-items: center;
+}
+
+input {
+  max-width: 12em;
 }
 
 td {
@@ -10,18 +30,12 @@ td {
 }
 
 h5 {
-  margin: 2em;
-}
-
-h5 select {
-  border: 0;
-  text-align: center;
-  padding-right: 1em;
+  margin-block: 2em;
+  white-space: nowrap;
+  margin-right: 1em;
   cursor: pointer;
-  border-bottom: 1px solid #111111;
 }
 
-h5 select:focus {
-  outline: none;
-  border: 0;
+select {
+  cursor: pointer;
 }

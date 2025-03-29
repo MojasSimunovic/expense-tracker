@@ -1,10 +1,13 @@
 import { inject } from '@angular/core';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { CanActivateFn, Router } from '@angular/router';
 
-export const authGuard: CanActivateFn = (route, state) => {
-  const localUser = localStorage.getItem('loggedUser');
+export const authGuard: CanActivateFn = async (route, state) => {
+  const auth = inject(AngularFireAuth);
   const router = inject(Router);
-  if (localUser != null) {
+  const user = await auth.currentUser;
+  
+  if (user) {
     return true;
   } else {
     router.navigateByUrl('login');
@@ -12,13 +15,15 @@ export const authGuard: CanActivateFn = (route, state) => {
   }
 };
 
-export const authGuardLoggedIn: CanActivateFn = (route, state) => {
-  const localUser = localStorage.getItem('loggedUser');
+export const authGuardLoggedIn: CanActivateFn = async (route, state) => {
+  const auth = inject(AngularFireAuth);
   const router = inject(Router);
-  if (localUser != null) {
-    router.navigateByUrl('home');
+  const user = await auth.currentUser;
+
+  if (user) {
+    router.navigateByUrl('home');  // Redirect logged-in users to home
     return false;
   } else {
-    return true;
+    return true;  // Allow navigation to login/signup
   }
 };

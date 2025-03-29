@@ -1,12 +1,34 @@
-:root {
+:host {
   min-height: 100vh;
 }
 
 .container-main {
+  /* padding-top: 0 !important; */
   min-height: max-content;
   padding-bottom: 3em;
+  background-color: #ffffff;
+}
+
+.navbar-collapse {
+  @media (max-width: 991px) {
+    transition: 0.35s ease;
+    &.show {
+      padding-bottom: 1.4em;
+    }
+    .navbar-nav {
+      margin-inline: 0 !important;
+    }
+    .nav-item {
+      text-align: center;
+    }
+    form {
+      margin-top: 2em;
+      justify-content: center;
+    }
+  }
 }
 
 .link-active {
   color: #ffffff;
 }
+

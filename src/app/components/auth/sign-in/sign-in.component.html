@@ -1,0 +1,73 @@
+<section class="vh-100 container">
+  <div class="h-custom">
+    <div
+      class="row vh-100 d-flex justify-content-center align-items-center h-100"
+    >
+      <div class="col-md-9 col-lg-6 col-xl-5">
+        <img
+          src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
+          class="img-fluid"
+          alt="Sample image"
+        />
+      </div>
+      <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+        <h1>Login page</h1>
+        <p>Still don't have an account? 
+         
+        </p>
+        <button [routerLink]="'/signup'" style="padding: 0;margin-bottom:2em;" class="btn btn-link">Sign up</button>
+        <form>
+          <!-- Email input -->
+          <div data-mdb-input-init class="form-outline mb-4">
+            <input
+              type="email"
+              id="form3Example3"
+              class="form-control form-control-lg"
+              placeholder="Enter a valid email address"
+              [(ngModel)]="email"
+              name="email"
+              required
+            />
+            <label class="form-label" for="form3Example3">Email address</label>
+          </div>
+
+          <!-- Password input -->
+          <div data-mdb-input-init class="form-outline mb-3">
+            <input
+              type="password"
+              id="form3Example4"
+              class="form-control form-control-lg"
+              placeholder="Enter password"
+              name="password"
+              [(ngModel)]="password" required
+            />
+            <label class="form-label" for="form3Example4">Password</label>
+          </div>
+
+          <div class="text-center text-lg-start mt-4 pt-2 mb-3">
+            <button
+              (click)="onSignIn()"
+              type="button"
+              data-mdb-button-init
+              data-mdb-ripple-init
+              class="btn btn-primary btn-lg"
+              style="padding-left: 2.5rem; padding-right: 2.5rem"
+            >
+              Login
+            </button>
+          </div>
+        </form>
+        <button
+              (click)="signInWithGoogle()"
+              type="button"
+              data-mdb-button-init
+              data-mdb-ripple-init
+              class="btn btn-link btn-lg"
+              style="padding-left: 0; padding-right: 0"
+            >
+              Sign in with Google
+            </button>
+      </div>
+    </div>
+  </div>
+</section>

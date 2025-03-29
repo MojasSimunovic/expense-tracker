@@ -17,31 +17,31 @@
     <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
       <ul class="navbar-nav mx-3">
         <li class="nav-item active">
-          <a class="nav-link" routerLink="home" routerLinkActive="link-active"
+          <a class="nav-link" routerLink="/home" routerLinkActive="link-active"
             >Home</a
           >
         </li>
         <li class="nav-item">
           <a
             class="nav-link"
-            routerLink="dashboard"
+            routerLink="/dashboard"
             routerLinkActive="link-active"
           >
             Dashboard</a
           >
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="new" routerLinkActive="link-active"
+          <a class="nav-link" routerLink="/new" routerLinkActive="link-active"
             >Create new</a
           >
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="qr" routerLinkActive="link-active"
+          <a class="nav-link" routerLink="/qr" routerLinkActive="link-active"
             >Scan QR</a
           >
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="bills" routerLinkActive="link-active"
+          <a class="nav-link" routerLink="/bills" routerLinkActive="link-active"
             >Scanned Bills</a
           >
         </li>
@@ -55,10 +55,8 @@
 <div class="container-main pt-4 vh-100">
   <router-outlet />
 </div>
-<footer>
-  <div
-    class="text-md-start justify-content-between py-4 px-4 px-xl-5 bg-secondary"
-  >
+<footer class="bg-dark">
+  <div class="text-md-start justify-content-between py-4 px-4 px-xl-5">
     <div class="text-white text-center mb-md-0 container">
       Copyright ©Mojas Simunovic 2025. All rights reserved.
     </div>

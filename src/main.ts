@@ -6,6 +6,7 @@ import { AppComponent } from './app/app.component';
 import { provideCharts } from 'ng2-charts';
 import * as echarts from 'echarts';
 import * as zrender from 'zrender';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 echarts.registerTheme('light', {
   color: [

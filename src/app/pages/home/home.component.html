@@ -1,6 +1,18 @@
-<div class="container">
-  <h1>Expense tracker app</h1>
-
+<div class="jumbotron jumbotron-fluid py-5 mb-5">
+  <div class="noise_noise">
+  
+  </div>
+  <div class="container">
+    <div class="content">
+      <h1 class="display-2">Expense tracker</h1>
+      <p class="lead">App to help you track your expenses and save your important bills for warranty.</p>
+    </div>
+    <div class="chart-container">
+      <app-chart></app-chart>
+    </div>
+  </div>
+</div>
+<div class="container mb-5">
   <div class="home-btns">
     <a routerLink="/qr">
       <mat-icon>qr_code_2</mat-icon>
@@ -15,9 +27,4 @@
       <h2>See dashboard with expenses</h2>
     </a>
   </div>
-  <h3 class="mt-5 text-center">Current month expenses breakdown:</h3>
-  <p class="text-center">
-    Total expenses: <strong>{{ totalAmount() }}</strong>
-  </p>
-  <echarts [options]="pieChartOptions" class="chart-container"></echarts>
 </div>

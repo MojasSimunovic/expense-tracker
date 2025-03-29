@@ -1,0 +1,8 @@
+{
+  "/api": {
+    "target": "https://suf.purs.gov.rs/",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug"
+  }
+}

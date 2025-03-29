@@ -1,0 +1,22 @@
+:host {
+  width: 100%;
+  @media (min-width:981px) {
+    display: flex;
+    align-items: flex-start;
+  } 
+}
+
+h5 {
+  margin-block: auto !important;
+}
+.echart-container {
+  min-height: max-content;
+  display: flex !important;
+  width: 100%; /* Make the container take full width */
+  height: 100%; /* Make the container take full height */
+  margin: 0 auto; /* Center the container */
+  overflow: hidden; /* Hide any overflowing content */
+  @media (min-width:1200px) {
+    min-height: 600px !important;
+  }
+}

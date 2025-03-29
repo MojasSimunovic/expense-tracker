@@ -3,6 +3,7 @@ import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
 import { Router } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-layout',
@@ -12,8 +13,10 @@ import { MatIconModule } from '@angular/material/icon';
 })
 export class LayoutComponent {
   router = inject(Router);
+  authService = inject(AuthService);
   logOut() {
-    localStorage.removeItem('loggedUser');
-    this.router.navigateByUrl('login');
+    this.authService.logOut().then(() => {
+      this.router.navigateByUrl('login');
+    }).catch(err => console.error('Logout Error:', err));
   }
 }

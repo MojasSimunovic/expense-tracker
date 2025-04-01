@@ -21,28 +21,32 @@
     <label for="date">Date</label>
     <input formControlName="date" id="date" type="date" />
   </div>
-  <div class="form-field">
-    <label for="category">Category</label>
-    <select formControlName="category" name="" id="category">
-      <option value="Food">Food</option>
-      <option value="Tech">Tech</option>
-      <option value="Clothes">Clothes</option>
-      <option value="Entertainment">Entertainment</option>
-      <option value="Cosmetics">Cosmetics</option>
-      <option value="Utilities">Utilities</option>
-      <option value="Transport">Transport</option>
-      <option value="Transport">Unknown</option>
-    </select>
-    <small
-      class="text-danger"
-      *ngIf="
-        expenseForm.get('category')?.invalid &&
-        expenseForm.get('category')?.touched
-      "
-    >
-      Please add article category!
-    </small>
+  <div class="form-row justify-content-between">
+    <div class="form-field">
+      <label for="category">Category</label>
+      <select formControlName="category" name="" id="category">
+        <option value="Groceries">Groceries</option>
+        <option value="Tech">Tech</option>
+        <option value="Clothes">Clothes</option>
+        <option value="Meals and Entertainment">Meals and Entertainment</option>
+        <option value="Cosmetics">Cosmetics</option>
+        <option value="Utilities">Utilities</option>
+        <option value="Transport">Transport</option>
+        <option value="Rent">Rent</option>
+        <option value="Unknown">Unknown</option>
+      </select>
+      <small
+        class="text-danger"
+        *ngIf="
+          expenseForm.get('category')?.invalid &&
+          expenseForm.get('category')?.touched
+        "
+      >
+        Please add article category!
+      </small>
+    </div>
   </div>
+
   <div class="form-row">
     <div class="form-field">
       <label for="price">Price</label>
@@ -69,6 +73,10 @@
         Please add article quantity!
       </small>
     </div>
+  </div>
+  <div class="form-field align-items-center flex-row gap-4 align-items-center">
+    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">    
+    <label class="mb-0" for="flexCheckDefault">Excess</label>
   </div>
 
   <button mat-raised-button [disabled]="!expenseForm.valid">Submit</button>

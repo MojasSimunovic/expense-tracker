@@ -6,6 +6,7 @@ import { EChartsCoreOption } from 'echarts/core';
 import { DatePipe } from '@angular/common';
 import { ExpenseService } from '../../services/expense.service';
 import { Expense } from '../../models/expense';
+import { subMonths, format } from 'date-fns';
 
 @Component({
   selector: 'app-chart',
@@ -20,13 +21,20 @@ export class ChartComponent implements OnInit {
   expenseService = inject(ExpenseService);
   pieChartOptions: any;
 
+  barChartOptions: any;
+
   currentMonth = signal<string>('');
+
+  lastMonthTotal?: number;
+
+  secondToLastTotal?: number;
 
   ngOnInit(): void {
         // Get all expenses from the service and set the Signal
         this.expenseService.getAll().subscribe((data) => {
           this.expenses.set(data); // Set the expenses list
           this.updatePieChart(); // Update the chart after fetching expenses
+          this.updateBarChart();
         });
         this.currentMonth.set(
           this.datePipe.transform(Date.now(), 'MM')?.toString() || ''
@@ -42,6 +50,31 @@ export class ChartComponent implements OnInit {
       })
       .reduce((sum, item) => sum + item.price, 0);
   });
+
+  previousMonthTotal = computed(() => {
+    const selectedMonth = this.currentMonth(); // Get selected month
+    const previousMonth = ((parseInt(selectedMonth) - 1 + 12) % 12) || 12; // Ensure it wraps around for January
+    const previousMonthStr = String(previousMonth).padStart(2, '0'); 
+    return this.expenses()
+      .filter((expense) => {
+        const expenseMonth = new Date(expense.date).getMonth() +1; // Extract month from expense.date
+        return previousMonthStr === '' || expenseMonth === parseInt(previousMonthStr);
+      })
+      .reduce((sum, item) => sum + item.price, 0);
+  });
+
+  secondToLastMonthTotal = computed(() => {
+    const selectedMonth = this.currentMonth(); // Get selected month
+    const previousMonth = ((parseInt(selectedMonth) - 2 + 12) % 12) || 12; // Ensure it wraps around for January
+    const previousMonthStr = String(previousMonth).padStart(2, '0'); 
+    return this.expenses()
+      .filter((expense) => {
+        const expenseMonth = new Date(expense.date).getMonth() +1; // Extract month from expense.date
+        return previousMonthStr === '' || expenseMonth === parseInt(previousMonthStr);
+      })
+      .reduce((sum, item) => sum + item.price, 0);
+  });
+
 
   getPieChartData(categoryTotals: any) {
     return Object.keys(categoryTotals).map((category: string) => ({
@@ -73,10 +106,15 @@ export class ChartComponent implements OnInit {
     }, {});
   }
 
+  getAllExpensesPerMonth(expenses: Expense[], month: string) {
+
+  }
+
   updatePieChart() {
     const categoryTotals = this.calculateCategoryTotals(this.expenses());
     const pieData = this.getPieChartData(categoryTotals);
     this.pieChartOptions = {
+      title: { text: `Current Month Total: RSD ${this.totalAmount()}`, left: 'center' },
       tooltip: {
         trigger: 'item',
       },
@@ -101,7 +139,28 @@ export class ChartComponent implements OnInit {
         },
       ],
     };
-    echarts.init().setOption(this.pieChartOptions);
+    const echart = document.querySelector('.echart-container') as HTMLElement;
+    if (echart) {
+      echarts.init(echart).setOption(this.pieChartOptions);
+    }
+  }
+
+  updateBarChart() {
+    this.barChartOptions = {
+      title: { text: 'Total Expenses (Last 3 Months)', left: 'center' },
+      tooltip: { trigger: 'axis' },
+      xAxis: { 
+        type: 'category', 
+        data: [format(subMonths(this.currentMonth(), 2), 'MMMM'),format(subMonths(this.currentMonth(), 1), 'MMMM') , format(this.currentMonth(), 'MMMM')] // X-axis labels
+      },
+      yAxis: { type: 'value' }, // Y-axis for expense amounts
+      series: [{
+        name: 'Total Expenses',
+        type: 'bar',
+        data: [this.secondToLastMonthTotal(), this.previousMonthTotal(), this.totalAmount()], // Dummy data: Total expenses per month
+        color: '#41cf8d' // Bar color
+      }]
+    };
   }
   onResize() {
       // Dynamically resize the chart when window is resized

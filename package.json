@@ -25,6 +25,7 @@
     "@zxing/ngx-scanner": "^19.0.0",
     "bootstrap": "^5.3.3",
     "chart.js": "^4.4.8",
+    "date-fns": "^4.1.0",
     "echarts": "^5.6.0",
     "ng2-charts": "^8.0.0",
     "ngx-echarts": "^19.0.0",

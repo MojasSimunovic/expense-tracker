@@ -33,13 +33,15 @@
         <select class="form-select" (change)="setFilter($event.target)">
           <option value="All">All</option>
           <option value="Tech">Tech</option>
-          <option value="Food">Food</option>
+          <option value="Groceries">Groceries</option>
           <option value="Clothes">Clothes</option>
-          <option value="Entertainment">Entertainment</option>
+          <option value="Meals and Entertainment">Meals and Entertainment</option>
+          
           <option value="Cosmetics">Cosmetics</option>
           <option value="Utilities">Utilities</option>
           <option value="Transport">Transport</option>
-          <option value="Transport">Unknown</option>
+          <option value="Rent">Rent</option>
+          <option value="Unknown">Unknown</option>
         </select>
       </div>
     </div>
@@ -52,6 +54,7 @@
     >
       <thead>
         <tr>
+          <th>Excess</th>
           <th>Date</th>
           <th>Item title</th>
           <th>Category</th>
@@ -64,6 +67,11 @@
       <tbody>
         <tr *ngFor="let expense of filteredExpenses()">
           <ng-container>
+            <td >
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+              </div>
+            </td>
             <td>
               <span>{{ expense.date | date : "shortDate" }}</span>
             </td>
@@ -73,13 +81,14 @@
             <td>
               <select class="form-select" [(ngModel)]="expense.category" (change)="updateExpense(expense)">
                 <option value="Unknown" selected hidden>{{ expense.category }}</option>
-                <option value="Food">Food</option>
+                <option value="Groceries">Groceries</option>
                 <option value="Tech">Tech</option>
                 <option value="Clothes">Clothes</option>
-                <option value="Entertainment">Entertainment</option>
+                <option value="Meals and Entertainment">Meals and Entertainment</option>
                 <option value="Cosmetics">Cosmetics</option>
                 <option value="Utilities">Utilities</option>
                 <option value="Transport">Transport</option>
+                <option value="Rent">Rent</option>
                 <option value="Transport">Unknown</option>
               </select>
               
@@ -114,6 +123,7 @@
       <tfoot class="table-secondary">
         <tr>
           <th scope="row">Total</th>
+          <th></th>
           <th></th>
           <th></th>
           <th></th>

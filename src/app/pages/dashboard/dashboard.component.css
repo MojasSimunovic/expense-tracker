@@ -104,3 +104,15 @@ thead {
 tfoot tr th {
   text-align: center;
 }
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.pagination button {
+  margin: 0 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+}

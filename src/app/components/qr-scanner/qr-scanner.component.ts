@@ -35,22 +35,7 @@ export class QrScannerComponent implements OnInit {
   toastService = inject(ToastService);
 
   ngOnInit(): void {
-    setTimeout(() => {
-      this.isLoader = false;
-    }, 800);
-  }
-
-  onCamerasNotFound(devices: MediaDeviceInfo[]) {
-    console.log(devices)
-    if (devices.length > 0) {
-      // this.isLoader = false; // Hide loader when cameras are found
-    }
-  }
-
-  onCamerasFound(devices: MediaDeviceInfo[]) {
-    if (devices.length > 0) {
-   //   this.isLoader = false; // Hide loader when cameras are found
-    }
+  
   }
 
   onScanSuccess(url: string) {
@@ -86,7 +71,6 @@ export class QrScannerComponent implements OnInit {
 
     const match = content.match(/ПФР време:\s+(\d{2}\.\d{2}\.\d{4})/);
     date = match && match[1] ? new Date(match[1].split('.').reverse().join('-')) : new Date();
-    // this.datePipe.transform(date, 'dd/MM/yyyy');
     const startIndexVendor = content.indexOf(startHeading);
     const endIndexVendor = content.indexOf(endHeading);
     if (startIndexVendor !== -1 && endIndexVendor !== -1) {
@@ -103,22 +87,25 @@ export class QrScannerComponent implements OnInit {
   }
 
   extractTextBetweenHeadings(content: string): string | null {
+    let date = new Date();
     const startHeading = 'Артикли';
     const endHeading = 'Укупан износ';
 
     const startIndex = content.indexOf(startHeading);
     const endIndex = content.indexOf(endHeading);
 
+    const match = content.match(/ПФР време:\s+(\d{2}\.\d{2}\.\d{4})/);
+    date = match && match[1] ? new Date(match[1].split('.').reverse().join('-')) : new Date();
     if (startIndex !== -1 && endIndex !== -1) {
       const textBetween = content.substring(startIndex + startHeading.length, endIndex).trim();
-      this.processExtractedText(textBetween);  // Pass extracted text to processExtractedText
+      this.processExtractedText(textBetween, date);  // Pass extracted text to processExtractedText
     }
 
     // Return null if the headings are not found
     return null;
   }
 
-  processExtractedText(text: string): any[] {
+  processExtractedText(text: string, date: Date): any[] {
     const lines = text.split('\n').map(line => line.trim()).filter(line => line.length > 0);
     // Remove the last line which is the separator
     lines.pop();
@@ -133,10 +120,10 @@ export class QrScannerComponent implements OnInit {
       if (itemDetails.length === 3) {
         const [price, quantity, totalPrice] = itemDetails;
         const priceWithoutDecimal = price.replace('.', '');
-
+        console.log(this.datePipe.transform(date, 'yyyy-MM-dd'));
         items.push({
           title: itemName,
-          date: this.today,
+          date: new Date(this.datePipe.transform(date, 'yyyy-MM-dd') || '').toISOString().split('T')[0],
           category: 'Unknown',
           price: parseInt(priceWithoutDecimal),
           quantity: parseInt(quantity),
@@ -154,11 +141,13 @@ export class QrScannerComponent implements OnInit {
     setTimeout(() => {
       this.router.navigateByUrl('dashboard');
     }, 900);
-   
-
     return items;
   }
+
+  onScannerInitialized() {
+    this.isLoader = false;
+  }
   showSuccess(template: TemplateRef<any>) {
-    this.toastService.show({ template, classname: 'bg-success text-light', delay: 5000 });
+    this.toastService.show({ template, classname: 'bg-success text-light', delay: 500 });
   }
 }

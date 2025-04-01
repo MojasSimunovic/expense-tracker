@@ -40,8 +40,8 @@ export class ExpenseService {
   // Get all expenses for the logged-in user
   getAll(): Observable<Expense[]> {
     if (!this.userId) throw new Error('No user logged in');
-    const expensesRef = collection(this.firestore, 'expenses', );
-    const expensesQuery = query(expensesRef, where('userId', '==', this.userId));
+    const expensesRef = collection(this.firestore, 'expenses');
+    const expensesQuery = query(expensesRef, where('userId', '==', this.userId)); // Filter by userId
     return collectionData(expensesQuery, { idField: 'id' }) as Observable<Expense[]>;
   }
 

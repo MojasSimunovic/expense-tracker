@@ -15,6 +15,7 @@ import { MatTableModule } from '@angular/material/table';
 import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { NgbCalendar, NgbDate, NgbDateParserFormatter, NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
+import { end, start } from '@popperjs/core';
 
 @Component({
   selector: 'app-dashboard',
@@ -46,7 +47,9 @@ export class DashboardComponent implements OnInit {
   changedDate = signal<Boolean>(false);
   
   sortedByDate = signal<boolean>(true);
-  // currentMonth = signal<string>('');
+
+  currentPage = signal<number>(1);
+  itemsPerPage = 1;
 
   filteredExpenses = computed(() => {
     const category = this.category();
@@ -71,7 +74,7 @@ export class DashboardComponent implements OnInit {
               : false;
   
         return isCategoryMatch && isDateInRange && isSearched;
-      }).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+      }).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
     } else {
       return this.expenses().filter((expense) => {
         const expenseDate = new Date(expense.date); 
@@ -92,6 +95,16 @@ export class DashboardComponent implements OnInit {
       }).sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
     }
   });
+
+  get totalPages() {
+    return Math.ceil(this.filteredExpenses().length / this.itemsPerPage);
+  }
+
+  changePage(newPage: number) {
+    if (newPage >= 1 && newPage <= this.totalPages) {
+      this.currentPage.set(newPage);
+    }
+  }
 
   filteredUnnecessaryExpenses = computed(() => {
     return this.filteredExpenses().reduce((acc, expense) => {

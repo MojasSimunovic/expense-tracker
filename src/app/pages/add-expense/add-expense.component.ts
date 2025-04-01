@@ -23,7 +23,6 @@ import { Router, ActivatedRoute } from '@angular/router';
   standalone: true,
 })
 export class AddExpenseComponent implements OnInit {
-  // newExpense?: Expense;
 
   today: string = new Date().toISOString().split('T')[0];
 

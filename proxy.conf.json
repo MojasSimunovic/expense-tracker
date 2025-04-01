@@ -2,6 +2,9 @@
   "/api": {
     "target": "https://suf.purs.gov.rs/",
     "secure": false,
+    "pathRewrite": {
+      "^/api": ""
+    },
     "changeOrigin": true,
     "logLevel": "debug"
   }

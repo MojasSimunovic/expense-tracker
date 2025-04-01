@@ -4,6 +4,19 @@ table {
     vertical-align: middle;
   }
 }
+
+.search-div {
+  display: flex;
+  align-items: center;
+  h5 {
+    margin-right: 1em;
+    margin-bottom: 0;
+  }
+  input {
+    max-width: fit-content;
+  }
+}
+
 .link-external {
   display: flex;
   align-items: center;
@@ -12,4 +25,30 @@ table {
   mat-icon {
     margin-right: 0.35em;
   }
+}
+
+table {
+  thead {
+    tr {
+      th {
+        text-align: center;
+      }
+    }
+  }
+  tbody {
+    tr {
+      td {
+        text-align: center;
+      }
+      a {
+        background-color: #41cf8d;
+        border: #41cf8d;
+        margin-inline: auto;
+      }
+    }
+  }
+}
+
+.vendor-td {
+  min-width: 65ch;
 }

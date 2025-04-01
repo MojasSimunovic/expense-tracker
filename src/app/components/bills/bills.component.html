@@ -1,6 +1,10 @@
 <div class="container">
   <h1 class="text-center">Scanned bills</h1>
     @if (bills().length > 0) {
+      <div class="form-group mb-3 search-div">
+        <h5>Search by vendor name:</h5>
+        <input id="search-input" class="form-control" type="text" placeholder="Search..." [(ngModel)]="searchValue">
+      </div>
       <table class="table table-striped">
         <thead>
           <tr>
@@ -19,26 +23,25 @@
           </tr>
         </thead>
         <tbody>
-          @for(bill of bills();track bill.id) {
-            <tr>
-              <td>
-                <span>{{ convertTimestampToDate(bill.date) | date:'dd/MM/yy' }}</span>
-              </td>
-              <td>
-                <span>{{ bill.vendor }}</span>
-              </td>
-              <td>
-                <a [href]="bill.url" target="_blank" class="btn btn-warning link-external">
-                  <mat-icon>link</mat-icon>
-                  Link to Bill
-                </a>
-              </td>
-              <td>
-                <button class="btn btn-danger" (click)="onRemoveBill(bill.id)">Remove</button>
-              </td>
-            </tr>
-
-          }
+            @for(bill of filteredBills();track $index) {
+              <tr>
+                <td>
+                  <span>{{ convertTimestampToDate(bill.date) | date:'dd/MM/yy' }}</span>
+                </td>
+                <td class="vendor-td">
+                  <span>{{ bill.vendor }}</span>
+                </td>
+                <td>
+                  <a [href]="bill.url" target="_blank" class="btn btn-warning link-external">
+                    <mat-icon>link</mat-icon>
+                    Link to Bill
+                  </a>
+                </td>
+                <td>
+                  <button class="btn btn-danger" (click)="onRemoveBill(bill.id)">Remove</button>
+                </td>
+              </tr>
+            }       
         </tbody>
       </table>
     } @else {

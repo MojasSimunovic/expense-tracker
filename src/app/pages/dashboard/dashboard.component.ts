@@ -37,9 +37,6 @@ export class DashboardComponent implements OnInit {
 	hoveredDate: NgbDate | null = null;
   fromDate:  NgbDate | null = new NgbDate(this.currentYear, this.currentMonth + 1, 1);
   toDate:  NgbDate | null = new NgbDate(this.currentYear, this.currentMonth + 1, new Date(this.currentYear, this.currentMonth + 1, 0).getDate());
-
-  // fromDate: NgbDate | null = this.calendar.getToday();
-	// toDate: NgbDate | null = this.calendar.getNext(this.calendar.getToday(), 'd', 10);
   datePipe = inject(DatePipe);
   expenses = signal<Expense[]>([]); // Stores all expenses
   category = signal<string>('All'); // Stores selected category

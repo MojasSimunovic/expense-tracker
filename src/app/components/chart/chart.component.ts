@@ -32,8 +32,8 @@ export class ChartComponent implements OnInit {
   ngOnInit(): void {
         // Get all expenses from the service and set the Signal
         this.expenseService.getAll().subscribe((data) => {
-          this.expenses.set(data); // Set the expenses list
-          this.updatePieChart(); // Update the chart after fetching expenses
+          this.expenses.set(data);
+          this.updatePieChart(); 
           this.updateBarChart();
         });
         this.currentMonth.set(
@@ -105,11 +105,6 @@ export class ChartComponent implements OnInit {
       return acc;
     }, {});
   }
-
-  getAllExpensesPerMonth(expenses: Expense[], month: string) {
-
-  }
-
   updatePieChart() {
     const categoryTotals = this.calculateCategoryTotals(this.expenses());
     const pieData = this.getPieChartData(categoryTotals);

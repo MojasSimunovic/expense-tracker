@@ -51,3 +51,12 @@ button .mdc-button__label {
   font-size: 0.85em;
   text-align: center;
 }
+
+.checkbox {
+  margin-top: -0.1em;
+  padding: 0.6em;
+  cursor: pointer;
+  &+label {
+    cursor: pointer;
+  }
+}

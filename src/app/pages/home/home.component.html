@@ -1,8 +1,4 @@
 <div class="jumbotron jumbotron-fluid py-5 mb-5">
-  <!-- <img src="assets/images/backgroundHome.avif" alt=""> -->
-  <div class="noise_noise">
-  
-  </div>
   <div class="container">
     <div class="content">
       <h1 class="display-2">SmartTrack</h1>
@@ -16,6 +12,10 @@
 </div>
 <div class="container mb-5">
   <div class="home-btns">
+    <a class="card-item" routerLink="/dashboard">
+      <mat-icon> list_alt</mat-icon>
+      <h2>See dashboard with expenses</h2>
+    </a>
     <a class="card-item" routerLink="/qr">
       <mat-icon>qr_code_2</mat-icon>
       <h2>Scan bill QR <br />code</h2>
@@ -23,10 +23,6 @@
     <a class="card-item" routerLink="/new">
       <mat-icon>create</mat-icon>
       <h2>Create a new expense</h2>
-    </a>
-    <a class="card-item" routerLink="/dashboard">
-      <mat-icon> list_alt</mat-icon>
-      <h2>See dashboard with expenses</h2>
     </a>
   </div>
 </div>

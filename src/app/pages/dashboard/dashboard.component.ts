@@ -9,48 +9,100 @@ import {
 import { OnInit } from '@angular/core';
 import { Expense } from '../../models/expense';
 import { ExpenseService } from '../../services/expense.service';
-import { BehaviorSubject, combineLatest, map, Observable } from 'rxjs';
-import { DatePipe, NgFor } from '@angular/common';
+import { DatePipe } from '@angular/common';
 import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { NgbCalendar, NgbDate, NgbDateParserFormatter, NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [NgFor, CommonModule, MatTableModule, FormsModule],
+  imports: [ NgbDatepickerModule, FormsModule, CommonModule, MatTableModule, FormsModule],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css',
   standalone: true,
   providers: [DatePipe],
 })
 export class DashboardComponent implements OnInit {
+
+
+	calendar = inject(NgbCalendar);
+	formatter = inject(NgbDateParserFormatter);
+
+  currentDate = new Date();
+  currentYear = this.currentDate.getFullYear();
+  currentMonth = this.currentDate.getMonth(); // 0-based month
+
+	hoveredDate: NgbDate | null = null;
+  fromDate:  NgbDate | null = new NgbDate(this.currentYear, this.currentMonth + 1, 1);
+  toDate:  NgbDate | null = new NgbDate(this.currentYear, this.currentMonth + 1, new Date(this.currentYear, this.currentMonth + 1, 0).getDate());
+
+  // fromDate: NgbDate | null = this.calendar.getToday();
+	// toDate: NgbDate | null = this.calendar.getNext(this.calendar.getToday(), 'd', 10);
   datePipe = inject(DatePipe);
   expenses = signal<Expense[]>([]); // Stores all expenses
   category = signal<string>('All'); // Stores selected category
 
   searchInput = signal<string>('');
 
-  currentMonth = signal<string>('');
+  changedDate = signal<Boolean>(false);
+  
+  sortedByDate = signal<boolean>(true);
+  // currentMonth = signal<string>('');
 
   filteredExpenses = computed(() => {
     const category = this.category();
-    const selectedMonth = this.currentMonth(); // Get the selected month
     const searchInput = this.searchInput();
+    this.changedDate();
     // Filter by category and month
-    return this.expenses().filter((expense) => {
-      const expenseMonth = new Date(expense.date).getMonth() + 1; // Get the month from the expense (1-based)
-      // check for the search input text
-      const isSearched = 
-        expense.title.toLowerCase().includes(searchInput);
-      // Check if both category and month match
-      const isCategoryMatch =
-        category === 'All' || expense.category === category;
-      const isMonthMatch =
-        selectedMonth === '' || expenseMonth === parseInt(selectedMonth); // Handle empty currentMonth
+    this.sortedByDate();
+    if (this.sortedByDate()) {
+      return this.expenses().filter((expense) => {
+        const expenseDate = new Date(expense.date); 
+        // check for the search input text
+        const isSearched = 
+          expense.title.toLowerCase().includes(searchInput);
+        // Check if both category and month match
+        const isCategoryMatch =
+          category === 'All' || expense.category === category;
+  
+        const isDateInRange = 
+            this.fromDate && this.toDate 
+              ? expenseDate >= new Date(this.fromDate.year, this.fromDate.month - 1, this.fromDate.day) &&
+                expenseDate <= new Date(this.toDate.year, this.toDate.month - 1, this.toDate.day + 1)
+              : false;
+  
+        return isCategoryMatch && isDateInRange && isSearched;
+      }).sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+    } else {
+      return this.expenses().filter((expense) => {
+        const expenseDate = new Date(expense.date); 
+        // check for the search input text
+        const isSearched = 
+          expense.title.toLowerCase().includes(searchInput);
+        // Check if both category and month match
+        const isCategoryMatch =
+          category === 'All' || expense.category === category;
+  
+        const isDateInRange = 
+            this.fromDate && this.toDate 
+              ? expenseDate >= new Date(this.fromDate.year, this.fromDate.month - 1, this.fromDate.day) &&
+                expenseDate <= new Date(this.toDate.year, this.toDate.month - 1, this.toDate.day + 1)
+              : false;
+  
+        return isCategoryMatch && isDateInRange && isSearched;
+      }).sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+    }
+  });
 
-      return isCategoryMatch && isMonthMatch && isSearched;
-    });
+  filteredUnnecessaryExpenses = computed(() => {
+    return this.filteredExpenses().reduce((acc, expense) => {
+      if (expense.excess) {
+        return acc + expense.price;
+      }
+      return acc;
+    }, 0);
   });
 
   totalAmount = computed(() =>
@@ -63,21 +115,10 @@ export class DashboardComponent implements OnInit {
     this.expenseService.getAll().subscribe((data) => {
       this.expenses.set(data);
     });
-    this.currentMonth.set(
-      this.datePipe.transform(Date.now(), 'MM')?.toString() || ''
-    );
-    setTimeout(() => {
-      console.log(this.expenses());
-    }, 600);
-   
   }
 
   setFilter(e: any) {
     this.category.set(e.value);
-  }
-
-  setFilterMonth(e: any) {
-    this.currentMonth.set(e.value);
   }
 
   onDelete(id: string) {
@@ -107,4 +148,48 @@ export class DashboardComponent implements OnInit {
     });
     this.expenses.set(filtered);
   }
+
+  assignExcessStyle(excess: boolean) {
+    if (excess === true) {
+      return {'--bs-table-bg': '#ff6d6d'};
+    } else {
+      return;
+    }
+  }
+
+	onDateSelection(date: NgbDate) {
+		if (!this.fromDate && !this.toDate) {
+			this.fromDate = date;
+		} else if (this.fromDate && !this.toDate && date && date.after(this.fromDate)) {
+			this.toDate = date;
+		} else {
+			this.toDate = null;
+			this.fromDate = date;
+		}
+    this.changedDate.set(!this.changedDate());
+	}
+
+	isHovered(date: NgbDate) {
+		return (
+			this.fromDate && !this.toDate && this.hoveredDate && date.after(this.fromDate) && date.before(this.hoveredDate)
+		);
+	}
+
+	isInside(date: NgbDate) {
+		return this.toDate && date.after(this.fromDate) && date.before(this.toDate);
+	}
+
+	isRange(date: NgbDate) {
+		return (
+			date.equals(this.fromDate) ||
+			(this.toDate && date.equals(this.toDate)) ||
+			this.isInside(date) ||
+			this.isHovered(date)
+		);
+	}
+
+	validateInput(currentValue: NgbDate | null, input: string): NgbDate | null {
+		const parsed = this.formatter.parse(input);
+		return parsed && this.calendar.isValid(NgbDate.from(parsed)) ? NgbDate.from(parsed) : currentValue;
+	}
 }

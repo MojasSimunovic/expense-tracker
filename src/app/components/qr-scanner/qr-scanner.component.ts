@@ -48,7 +48,6 @@ export class QrScannerComponent implements OnInit {
   }
 
   onCamerasFound(devices: MediaDeviceInfo[]) {
-    console.log(devices)
     if (devices.length > 0) {
    //   this.isLoader = false; // Hide loader when cameras are found
     }
@@ -141,7 +140,8 @@ export class QrScannerComponent implements OnInit {
           category: 'Unknown',
           price: parseInt(priceWithoutDecimal),
           quantity: parseInt(quantity),
-          id: crypto.randomUUID()
+          id: crypto.randomUUID(),
+          excess: false
         });
       }
       

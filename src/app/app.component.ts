@@ -18,9 +18,4 @@ import { MatIconModule } from '@angular/material/icon';
   styleUrl: './app.component.css',
 })
 export class AppComponent {
-  public isExpanded = false;
-
-  public toggleMenu() {
-    this.isExpanded = !this.isExpanded;
-  }
 }

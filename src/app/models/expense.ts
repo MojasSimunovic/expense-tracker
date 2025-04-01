@@ -5,4 +5,5 @@ export interface Expense {
   price: number;
   title: string;
   quantity: number;
+  excess: boolean;
 }

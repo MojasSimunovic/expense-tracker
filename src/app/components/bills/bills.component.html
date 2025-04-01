@@ -1,6 +1,6 @@
 <div class="container">
-  <h2 class="text-center">Scanned bills</h2>
-    @if (bills()) {
+  <h1 class="text-center">Scanned bills</h1>
+    @if (bills().length > 0) {
       <table class="table table-striped">
         <thead>
           <tr>
@@ -41,6 +41,8 @@
           }
         </tbody>
       </table>
+    } @else {
+      <h3 class="display-5 text-center">No bills have been scanned or added yet!</h3>
     }
 
 </div>

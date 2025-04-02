@@ -70,7 +70,7 @@ export class ExpenseService {
       .set('Content-Type', 'application/json')
       .set('Accept', 'application/json');
     
-      return this.http.get<any>(`http://localhost:3000/proxy?url=${encodeURIComponent(url)}`, { headers });
+      return this.http.get<any>(`${encodeURIComponent(url)}`, { headers });
   }
 
   // Bills

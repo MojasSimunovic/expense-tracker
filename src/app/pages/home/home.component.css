@@ -53,26 +53,11 @@ h1 {
 }
 
 img {
-  z-index: 1;
-  object-fit: contain;
-  animation: move-phone 1500ms steps(10) infinite;
-  transform-style: preserve-3d;
-  will-change: transform;
-  object-fit: cover;
   width: 100%;
   height: auto;
-  min-height: max-content;
-  @media (min-width: 981px) {
-    position: absolute;
-    left: 0;
-    top: 20%;
-  }
-  @media(min-width: 1100px){
-    top: 10%;
-  }
-  @media (max-width: 980.5px) {
-    width: 45%;
-    top: 0;
+  animation: move-phone 1500ms steps(10) infinite;
+  @media (max-width: 981px) {
+    width: 30%;
   }
 }
 

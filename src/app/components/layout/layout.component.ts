@@ -15,6 +15,20 @@ import { QrButtonComponent } from "../qr-button/qr-button.component";
 export class LayoutComponent {
   router = inject(Router);
   authService = inject(AuthService);
+
+  closeNavbar() {
+    const navbarCollapse = document.getElementById('navbarNav') as HTMLElement;
+    if (navbarCollapse) {
+      if (navbarCollapse.classList.contains('show')) {
+        navbarCollapse.classList.add('collapsing');
+        navbarCollapse.classList.remove('show');
+        setTimeout(() => {
+          navbarCollapse.classList.remove('collapsing');
+        }, 600);
+      }
+    }
+  }
+
   logOut() {
     this.authService.logOut().then(() => {
       this.router.navigateByUrl('login');

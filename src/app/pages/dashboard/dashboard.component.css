@@ -32,6 +32,10 @@ input {
   cursor: pointer;
 }
 
+.hidden-element {
+  visibility: hidden;
+}
+
 td {
   vertical-align: middle;
 }

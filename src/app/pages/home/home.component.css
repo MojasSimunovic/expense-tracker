@@ -89,7 +89,7 @@ img {
   border-radius: 100%;
   width: 50%;
   height: 20px;
-  margin-inline: auto;
+  
   position: absolute;
   inset: auto 10% -20px 0%;
   bottom: 3.5em;
@@ -97,7 +97,9 @@ img {
   transform-style: preserve-3d;
   will-change: transform,opacity;
   @media(max-width:980.5px) {
+    margin-inline: auto;
     bottom: -1em;
+    width: 30%;
   }
 }
 

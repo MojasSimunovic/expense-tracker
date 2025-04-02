@@ -19,12 +19,13 @@
     <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
       <ul class="navbar-nav mx-3">
         <li class="nav-item active">
-          <a class="nav-link" routerLink="/home" routerLinkActive="link-active"
+          <a (click)="closeNavbar()" class="nav-link" routerLink="/home" routerLinkActive="link-active"
             >Home</a
           >
         </li>
         <li class="nav-item">
           <a
+          (click)="closeNavbar()"
             class="nav-link"
             routerLink="/dashboard"
             routerLinkActive="link-active"
@@ -33,18 +34,18 @@
           >
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/qr" routerLinkActive="link-active"
+          <a (click)="closeNavbar()" class="nav-link" routerLink="/qr" routerLinkActive="link-active"
             >Scan QR</a
           >
         </li>
         <li class="nav-item">
-          <a class="nav-link" routerLink="/new" routerLinkActive="link-active"
+          <a (click)="closeNavbar()" class="nav-link" routerLink="/new" routerLinkActive="link-active"
             >Create new</a
           >
         </li>
         
         <li class="nav-item">
-          <a class="nav-link" routerLink="/bills" routerLinkActive="link-active"
+          <a (click)="closeNavbar()" class="nav-link" routerLink="/bills" routerLinkActive="link-active"
             >Scanned Bills</a
           >
         </li>

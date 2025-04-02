@@ -13,9 +13,9 @@
 .navbar-collapse {
   @media (max-width: 991px) {
     transition: 0.35s ease;
-    &.show {
+    /* &.show {
       padding-bottom: 1.4em;
-    }
+    } */
     .navbar-nav {
       margin-inline: 0 !important;
     }

@@ -17,6 +17,12 @@
          
         </p>
         <button [routerLink]="'/signup'" style="padding: 0;margin-bottom:2em;" class="btn btn-link">Sign up</button>
+        @if(submitError) {
+          <p class="text-danger">
+            There is no user with these credentials, please try again!
+          </p>
+        }
+ 
         <form>
           <!-- Email input -->
           <div data-mdb-input-init class="form-outline mb-4">
@@ -26,10 +32,11 @@
               class="form-control form-control-lg"
               placeholder="Enter a valid email address"
               [(ngModel)]="email"
+              #emailModel="ngModel"
               name="email"
               required
+              email
             />
-            <label class="form-label" for="form3Example3">Email address</label>
           </div>
 
           <!-- Password input -->

@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, inject, OnInit, signal, TemplateRef, ViewChild } from '@angular/core';
 import { ZXingScannerModule } from '@zxing/ngx-scanner';
 import { BarcodeFormat } from '@zxing/library';
 import { ExpenseService } from '../../services/expense.service';
@@ -10,6 +10,7 @@ import { DatePipe } from '@angular/common';
 import { NgbToastModule } from '@ng-bootstrap/ng-bootstrap';
 import { ToastService } from '../../services/toast.service';
 import { ToastsContainer } from '../../components/toasts-container/toasts-container.component'
+import { merge } from 'zrender/lib/core/util';
 
 @Component({
   selector: 'app-qr-scanner',
@@ -34,6 +35,8 @@ export class QrScannerComponent implements OnInit {
 
   toastService = inject(ToastService);
 
+  textBetween = signal('');
+
   ngOnInit(): void {
   
   }
@@ -45,7 +48,10 @@ export class QrScannerComponent implements OnInit {
         const panelBodyData = parser.parseFromString(data, 'text/html');
         const preTagContent = panelBodyData.querySelector('pre');
         if (preTagContent) {
-          this.extractTextBetweenHeadings(preTagContent.innerHTML);
+          const extractedItems = this.extractTextBetweenHeadings(preTagContent.innerHTML);
+          if (extractedItems) {
+            this.processExtractedText(extractedItems, new Date()); // Slanje u procesiranje
+          }
           this.generateBill(preTagContent.innerHTML, url);
         } else {
           console.warn('preTagContent is null');
@@ -58,7 +64,7 @@ export class QrScannerComponent implements OnInit {
         }
       }
     );
-  }
+}
 
   generateBill(content: string, urlHref: string): any {
     let vendor: string = '';
@@ -86,70 +92,80 @@ export class QrScannerComponent implements OnInit {
     this.invoiceService.addBill(bill);  
   }
 
-  extractTextBetweenHeadings(content: string): string | null {
+  extractTextBetweenHeadings(text: string): string[][] | null {
     let date = new Date();
-    const startHeading = 'Артикли';
-    const endHeading = 'Укупан износ';
-
-    const startIndex = content.indexOf(startHeading);
-    const endIndex = content.indexOf(endHeading);
-
-    const match = content.match(/ПФР време:\s+(\d{2}\.\d{2}\.\d{4})/);
+    const match = text.match(/ПФР време:\s+(\d{2}\.\d{2}\.\d{4})/);
     date = match && match[1] ? new Date(match[1].split('.').reverse().join('-')) : new Date();
-    if (startIndex !== -1 && endIndex !== -1) {
-      const textBetween = content.substring(startIndex + startHeading.length, endIndex).trim();
-      console.log('text izmedju: ' + textBetween);
-      this.processExtractedText(textBetween, date);  // Pass extracted text to processExtractedText
+
+    const lines = text.split('\n').map(line => line.trim());
+    const startIdx = lines.findIndex(line => line.includes("Назив   Цена         Кол.         Укупно"));
+    const endIdx = lines.findIndex(line => line.startsWith("----------------------------------------"));
+
+    if (startIdx === -1 || endIdx === -1 || startIdx >= endIdx) {
+      console.error("Could not find the expected section.");
+      return null;
     }
-    console.log(content)
-    
 
-    // Return null if the headings are not found
-    return null;
-  }
+    const rawItems = lines.slice(startIdx + 1, endIdx);
+    const mergedItems: string[][] = [];
+    let currentItem: string[] = [];
 
-  processExtractedText(text: string, date: Date): any[] {
-    const lines = text.split('\n').map(line => line.trim()).filter(line => line.length > 0);
-    // Remove the last line which is the separator
-    lines.pop();
-    const items: Expense[] = [];
-
-    // Skip the first two lines (header and column titles) and start from the 3rd line
-    for (let i = 2; i < lines.length; i += 2) {
-      const itemName = lines[i].replace(/\s+/g, ' ').trim();
-      const itemDetails = lines[i + 1].split(/\s+/); // Split by spaces to separate price, quantity, and total
-
-      // Ensure itemDetails has all expected values
-      if (itemDetails.length === 3) {
-        const [price, quantity, totalPrice] = itemDetails;
-        const priceWithoutDecimal = price.replace('.', '');
-        items.push({
-          title: itemName,
-          date: new Date(this.datePipe.transform(date, 'yyyy-MM-dd') || '').toISOString().split('T')[0],
-          category: 'Unknown',
-          price: parseInt(priceWithoutDecimal),
-          quantity: parseInt(quantity),
-          id: crypto.randomUUID(),
-          excess: false
-        });
+    for (const line of rawItems) {
+      if (/^\d{1,3},\d{2}/.test(line)) { 
+        // Nova stavka (počinje sa cenom)
+        currentItem.push(line);
+        mergedItems.push([...currentItem]); 
+        currentItem = []; 
+      } else {
+        // Deo naziva proizvoda
+        currentItem.push(line);
       }
-      
-    } 
-    for (let expense of items) {
-      this.invoiceService.addExpense(expense);
     }
-    this.isLoader = true;
-    this.showSuccess(this.successTpl);
-    setTimeout(() => {
-      this.router.navigateByUrl('dashboard');
-    }, 900);
-    return items;
+
+    return mergedItems;
+}
+
+processExtractedText(extractedItems: string[][], date: Date): any[] {
+  const items: Expense[] = [];
+
+  for (const itemParts of extractedItems) {
+      if (itemParts.length < 2) continue; // Ensure we have enough data
+
+      const itemName = itemParts.slice(0, -1).join(' '); // Everything except last part is name
+      const itemDetails = itemParts[itemParts.length - 1].split(/\s+/); // Last line is price, quantity, total
+
+      if (itemDetails.length === 3) {
+          const [price, quantity, totalPrice] = itemDetails;
+          const priceFormatted = parseFloat(price.replace(',', '.')); // Convert "84,99" to 84.99
+
+          items.push({
+              title: itemName,
+              date: new Date(this.datePipe.transform(date, 'yyyy-MM-dd') || '').toISOString().split('T')[0],
+              category: 'Unknown',
+              price: priceFormatted, // Corrected price
+              quantity: parseInt(quantity),
+              id: crypto.randomUUID(),
+              excess: false
+          });
+      }
   }
+
+  for (let expense of items) {
+      this.invoiceService.addExpense(expense);
+  }
+  this.isLoader = true;
+  this.showSuccess(this.successTpl);
+  setTimeout(() => {
+      this.router.navigateByUrl('dashboard');
+  }, 100);
+
+  return items;
+}
 
   onScannerInitialized() {
     this.isLoader = false;
   }
   showSuccess(template: TemplateRef<any>) {
-    this.toastService.show({ template, classname: 'bg-success text-light', delay: 500 });
+    this.toastService.show({ template, classname: 'bg-success text-light', delay: 100 });
   }
 }

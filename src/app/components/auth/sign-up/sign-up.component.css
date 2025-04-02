@@ -7,9 +7,9 @@
     position: absolute;
     font-weight: 500;z-index: 4;
   }
-  img {
+  /* img {
     animation: rotate 45s infinite;
-  }
+  } */
 }
 
 @keyframes rotate {

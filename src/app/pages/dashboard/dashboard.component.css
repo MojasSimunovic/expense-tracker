@@ -14,6 +14,12 @@ table {
 .dashboard-filters {
   display: flex;
   gap: 5em;
+  @media(max-width:994px) {
+    gap: 1em;
+  }
+  @media(max-width:360px){
+    flex-wrap: wrap;
+  }
 }
 
 .dashboard-filter {
@@ -35,6 +41,9 @@ h5 {
   white-space: nowrap;
   margin-right: 1em;
   cursor: pointer;
+  @media(max-width:994px) {
+    display: none;;
+  }
 }
 
 select {
@@ -76,6 +85,7 @@ select {
 thead {
   tr {
     th {
+      white-space: preserve nowrap;
       text-align: center;
     }
   }
@@ -86,6 +96,11 @@ thead {
     td {
       text-align: center;
     }
+  }
+  @media(max-width:980px){
+  .btn {
+    width: 90%;
+  }
   }
 }
 

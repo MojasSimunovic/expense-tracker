@@ -1,6 +1,6 @@
 <div class="container">
   <h1 class="text-center">Dashboard</h1>
-  <div class="d-flex justify-content-between align-items-center">
+  <div class="d-flex justify-content-between align-items-center d">
     <div class="dashboard-filters">
       <div class="dashboard-filter">
         <h5>Filter by date:</h5>
@@ -44,9 +44,7 @@
                 [value]="formatter.format(fromDate)"
                 (input)="fromDate = validateInput(fromDate, dpFromDate.value)"
               />
-              <button class="btn btn-outline-secondary bi bi-calendar3" (click)="datepicker.toggle()" type="button"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar" viewBox="0 0 16 16">
-                <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z"/>
-              </svg></button>
+              <button class="btn btn-outline-secondary bi bi-calendar3" (click)="datepicker.toggle()" type="button"></button>
             </div>
           </div>
         </form>
@@ -77,111 +75,115 @@
   </div>
   <hr />
   @if (filteredExpenses().length > 0) {
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>Excess</th>
-          <th>Date
-            <button class="sort-btn" (click)="sortedByDate.set(!sortedByDate())"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-expand" viewBox="0 0 16 16">
-              <path fill-rule="evenodd" d="M3.646 9.146a.5.5 0 0 1 .708 0L8 12.793l3.646-3.647a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 0-.708m0-2.292a.5.5 0 0 0 .708 0L8 3.207l3.646 3.647a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 0 0 0 .708"/>
-            </svg></button>
-          </th>
-          <th>Item title</th>
-          <th>Category</th>
-          <th>Quantity</th>
-          <th>Price</th>
-          <th>Total Price (RSD)</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        @for (expense of filteredExpenses(); track $index) {
-          <tr [ngStyle]="assignExcessStyle(expense.excess)">
-            <ng-container>
-              <td >
-                <div class="form-check">
-                  <input class="form-check-input" [(ngModel)]="expense.excess" (change)="updateExpense(expense)" type="checkbox" value="" id="flexCheckDefault">
-                </div>
-              </td>
-              <td>
-                <span>{{ expense.date | date : "dd/MM/yyyy" }}</span>
-              </td>
-              <td>
-                <span>{{ expense.title }}</span>
-              </td>
-              <td>
-                <select class="form-select" [(ngModel)]="expense.category" (change)="updateExpense(expense)">
-                  <option value="Unknown" selected hidden>{{ expense.category }}</option>
-                  <option value="Groceries">Groceries</option>
-                  <option value="Tech">Tech</option>
-                  <option value="Clothes">Clothes</option>
-                  <option value="Meals and Entertainment">Meals and Entertainment</option>
-                  <option value="Cosmetics">Cosmetics</option>
-                  <option value="Utilities">Utilities</option>
-                  <option value="Transport">Transport</option>
-                  <option value="Rent">Rent</option>
-                  <option value="Transport">Unknown</option>
-                </select>
-                
-              </td>
-              <td>
-                <span>{{ expense.quantity }}</span>
-              </td>
-              <td>
-                <span>{{ expense.price }}</span>
-              </td>
-              <td>
-                <span>{{ expense.quantity * expense.price }}</span>
-              </td>
-  
-              <td>
-                <button
-                  class="btn btn-sm btn-danger m-1"
-                  (click)="onDelete(expense.id)"
-                >
-                  Delete
-                </button>
-                <button
-                  class="btn btn-sm btn-secondary m-1"
-                  (click)="onEdit(expense)"
-                >
-                  Edit
-                </button>
-              </td>
-            </ng-container>
-          </tr>
-        }
- 
-      </tbody>
-      <tfoot class="table-secondary">
-        <tr>
-          <th scope="row">Total <span class="invisible-placeholder">amount</span></th>
-          <th></th>
-          <th></th>
-          <th></th>
-          <th></th>
-          <th></th>
-          <th>
-            <strong>{{ totalAmount() | currency: 'RSD ' }}</strong>
-          </th>
-          <th></th>
-        </tr>
-        @if (filteredUnnecessaryExpenses()) {
+    <div class="table-responsive">
+      <table class="table table-striped table-hover">
+        <thead>
           <tr>
-            <th scope="row">Total excess</th>
+            <th>Excess</th>
+            <th>Date
+              <button class="sort-btn" (click)="sortedByDate.set(!sortedByDate())">
+                <span class="sr-only">Sort by date</span>
+                <i class="bi bi-chevron-expand"></i></button>
+            </th>
+            <th>Item title</th>
+            <th>Category</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Total Price (RSD)</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (expense of filteredExpenses(); track $index) {
+            <tr [ngStyle]="assignExcessStyle(expense.excess)">
+              <ng-container>
+                <td >
+                  <div class="form-check">
+                    <input class="form-check-input" [(ngModel)]="expense.excess" (change)="updateExpense(expense)" type="checkbox" value="" id="flexCheckDefault">
+                  </div>
+                </td>
+                <td>
+                  <span>{{ expense.date | date : "dd/MM/yyyy" }}</span>
+                </td>
+                <td>
+                  <span>{{ expense.title }}</span>
+                </td>
+                <td>
+                  <select class="form-select" [(ngModel)]="expense.category" (change)="updateExpense(expense)">
+                    <option value="Unknown" selected hidden>{{ expense.category }}</option>
+                    <option value="Groceries">Groceries</option>
+                    <option value="Tech">Tech</option>
+                    <option value="Clothes">Clothes</option>
+                    <option value="Meals and Entertainment">Meals and Entertainment</option>
+                    <option value="Cosmetics">Cosmetics</option>
+                    <option value="Utilities">Utilities</option>
+                    <option value="Transport">Transport</option>
+                    <option value="Rent">Rent</option>
+                    <option value="Transport">Unknown</option>
+                  </select>
+                  
+                </td>
+                <td>
+                  <span>{{ expense.quantity }}</span>
+                </td>
+                <td>
+                  <span>{{ expense.price }}</span>
+                </td>
+                <td>
+                  <span>{{ expense.quantity * expense.price }}</span>
+                </td>
+    
+                <td>
+                  <button
+                    class="btn btn-sm btn-danger m-1"
+                    (click)="onDelete(expense.id)"
+                  >
+                  <span class="sr-only">Delete</span>
+                  <i class="bi bi-trash"></i>
+                  </button>
+                  <button
+                    class="btn btn-sm btn-secondary m-1"
+                    (click)="onEdit(expense)"
+                  >
+                  <span class="sr-only">Edit</span>
+                  <i class="bi bi-pencil-square"></i>
+                  </button>
+                </td>
+              </ng-container>
+            </tr>
+          }
+  
+        </tbody>
+        <tfoot class="table-secondary">
+          <tr>
+            <th scope="row">Total <span class="invisible-placeholder">amount</span></th>
             <th></th>
             <th></th>
             <th></th>
             <th></th>
             <th></th>
             <th>
-              <strong>{{ filteredUnnecessaryExpenses() | currency: 'RSD ' }}</strong>
+              <strong>{{ totalAmount() | currency: 'RSD ' }}</strong>
             </th>
             <th></th>
           </tr>
-        }
-      </tfoot>
-    </table>
+          @if (filteredUnnecessaryExpenses()) {
+            <tr>
+              <th scope="row">Total excess</th>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th></th>
+              <th>
+                <strong>{{ filteredUnnecessaryExpenses() | currency: 'RSD ' }}</strong>
+              </th>
+              <th></th>
+            </tr>
+          }
+        </tfoot>
+      </table>
+    </div>
     <!-- <div class="pagination">
       <button (click)="changePage(currentPage() - 1)" [disabled]="currentPage() === 1">Previous</button>
       

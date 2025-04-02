@@ -35,3 +35,15 @@ h2 {
   justify-content: center;
   min-height: fit-content;
 }
+
+.sr-only {
+  display: block;
+  border: 0 !important;
+	clip-path: inset(50%) !important; /* 2 */
+	height: 1px !important;
+	margin: -1px !important;
+	overflow: hidden !important;
+	padding: 0 !important;
+	width: 1px !important;
+	white-space: nowrap !important; /* 3 */
+}

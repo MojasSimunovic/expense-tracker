@@ -9,7 +9,7 @@ import { Bill } from '../../models/bill';
 import { DatePipe } from '@angular/common';
 import { NgbToastModule } from '@ng-bootstrap/ng-bootstrap';
 import { ToastService } from '../../services/toast.service';
-import { ToastsContainer } from '../toasts-container/toasts-container.component';
+import { ToastsContainer } from '../../components/toasts-container/toasts-container.component'
 
 @Component({
   selector: 'app-qr-scanner',

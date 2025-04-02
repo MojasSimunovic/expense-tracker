@@ -4,10 +4,11 @@ import { Router } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { AuthService } from '../../services/auth.service';
+import { QrButtonComponent } from "../qr-button/qr-button.component";
 
 @Component({
   selector: 'app-layout',
-  imports: [RouterOutlet, MatIconModule, MatButtonModule, RouterLink, RouterLinkActive],
+  imports: [RouterOutlet, MatIconModule, MatButtonModule, RouterLink, RouterLinkActive, QrButtonComponent],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.css',
 })

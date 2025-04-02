@@ -4,6 +4,10 @@ form {
   padding: 2em;
   border-radius: 20px;
   box-shadow: 3px 4px 8px lightgrey;
+  @media(max-width:600px) {
+    padding-bottom: 4em;
+    box-shadow: -1px 4px 8px #0000009c;
+  }
 }
 
 .form-field {
@@ -31,6 +35,10 @@ select {
   display: flex;
   gap: 2em;
   flex: 1 1 auto;
+  @media(max-width:520px) {
+    flex-direction: column;
+    gap: 0;
+  }
 }
 
 button {

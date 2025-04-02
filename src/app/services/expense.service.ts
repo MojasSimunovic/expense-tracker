@@ -24,7 +24,7 @@ export class ExpenseService {
 
   private userId: string;
   http = inject(HttpClient);
-  private apiUrl = 'http://localhost:3000/scrape';
+  private apiUrl = 'https://api-jh3q7fxcvq-uc.a.run.app/proxy';
   constructor(private firestore: Firestore) {
     const auth = getAuth();
     this.userId = auth.currentUser?.uid || '';
@@ -69,8 +69,7 @@ export class ExpenseService {
     const headers = new HttpHeaders()
       .set('Content-Type', 'application/json')
       .set('Accept', 'application/json');
-    
-      return this.http.get<any>(`${encodeURIComponent(url)}`, { headers });
+      return this.http.get<any>(`${this.apiUrl}?url=${encodeURIComponent(url)}`, { headers });
   }
 
   // Bills

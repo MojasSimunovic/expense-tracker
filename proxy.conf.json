@@ -1,6 +1,6 @@
 {
   "/api": {
-    "target": "https://suf.purs.gov.rs/",
+    "target": "/",
     "secure": false,
     "pathRewrite": {
       "^/api": ""

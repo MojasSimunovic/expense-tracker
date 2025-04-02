@@ -98,8 +98,11 @@ export class QrScannerComponent implements OnInit {
     date = match && match[1] ? new Date(match[1].split('.').reverse().join('-')) : new Date();
     if (startIndex !== -1 && endIndex !== -1) {
       const textBetween = content.substring(startIndex + startHeading.length, endIndex).trim();
+      console.log('text izmedju: ' + textBetween);
       this.processExtractedText(textBetween, date);  // Pass extracted text to processExtractedText
     }
+    console.log(content)
+    
 
     // Return null if the headings are not found
     return null;
@@ -120,7 +123,6 @@ export class QrScannerComponent implements OnInit {
       if (itemDetails.length === 3) {
         const [price, quantity, totalPrice] = itemDetails;
         const priceWithoutDecimal = price.replace('.', '');
-        console.log(this.datePipe.transform(date, 'yyyy-MM-dd'));
         items.push({
           title: itemName,
           date: new Date(this.datePipe.transform(date, 'yyyy-MM-dd') || '').toISOString().split('T')[0],

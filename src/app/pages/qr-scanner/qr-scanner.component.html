@@ -7,14 +7,13 @@
       </div>
     </div>
   }
-  <zxing-scanner
-    (camerasFound)="onScannerInitialized()"
-    (click)="forceRefocus()"
-    [device]="selectedDevice"
-    (scanSuccess)="onScanSuccess($event)"
-  >
-  </zxing-scanner>
-
-	<ng-template #successTpl> Scan Successful </ng-template>
+  <div id="qr-scanner"></div>
+  <h2 class="text-center mt-5">Or just paste scanned url</h2>
+  <form (ngSubmit)="onSubmit(urlForm.value)" #urlForm="ngForm" class="text-center form-url-input">
+    <label for="url">URL</label>
+    <input class="form-control" name="url" type="text" [(ngModel)]="url" required placeholder="Paste the URL here">
+    <button class="btn btn-success" type="submit">Submit</button>
+  </form>
+	<ng-template #succes sTpl> Scan Successful </ng-template>
   <app-toasts aria-live="polite" aria-atomic="true"></app-toasts>
 </div>

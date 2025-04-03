@@ -1,6 +1,5 @@
-import { Component, inject, OnInit, signal, TemplateRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, inject, OnInit, signal, TemplateRef, ViewChild } from '@angular/core';
 import { ZXingScannerModule } from '@zxing/ngx-scanner';
-import { BarcodeFormat } from '@zxing/library';
 import { ExpenseService } from '../../services/expense.service';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
@@ -10,11 +9,13 @@ import { DatePipe } from '@angular/common';
 import { NgbToastModule } from '@ng-bootstrap/ng-bootstrap';
 import { ToastService } from '../../services/toast.service';
 import { ToastsContainer } from '../../components/toasts-container/toasts-container.component'
-import { merge } from 'zrender/lib/core/util';
+import { Html5QrcodeScanner } from 'html5-qrcode';
+import { FormsModule } from '@angular/forms';
+
 
 @Component({
   selector: 'app-qr-scanner',
-  imports: [ZXingScannerModule, NgbToastModule, ToastsContainer],
+  imports: [ZXingScannerModule, NgbToastModule, ToastsContainer,FormsModule],
   templateUrl: './qr-scanner.component.html',
   styleUrl: './qr-scanner.component.css',
   providers: [DatePipe]
@@ -31,14 +32,39 @@ export class QrScannerComponent implements OnInit {
   selectedDevice?: MediaDeviceInfo;
   invoiceData: any[] = [];
 
+  url?: string;
+
   today: any = new Date().toISOString().split('T')[0];
 
   toastService = inject(ToastService);
 
   textBetween = signal('');
 
+  scannedResult: string | null = null;
+
+  private scanner?: Html5QrcodeScanner;
+
   ngOnInit(): void {
-  
+    this.scanner = new Html5QrcodeScanner(
+      'qr-scanner', 
+      { fps: 10, qrbox: 200 }, // Set frame rate and size of the QR box
+      true
+    );
+    this.scanner.render(
+      this.onScanSuccess.bind(this),
+      (errorMessage: string) => console.error('QR Code scan error:', errorMessage) 
+    );
+  }
+
+  onSubmit(formValue: { url: string }) {
+    const url = formValue.url;
+    this.onScanSuccess(url);
+    formValue.url = '';
+    navigator.vibrate(50);
+    this.showSuccess(this.successTpl);
+    setTimeout(() => {
+      this.router.navigateByUrl('dashboard');
+    }, 100); // Call onScanSuccess with the URL from the form
   }
 
   onScanSuccess(url: string) {
@@ -50,7 +76,7 @@ export class QrScannerComponent implements OnInit {
         if (preTagContent) {
           const extractedItems = this.extractTextBetweenHeadings(preTagContent.innerHTML);
           if (extractedItems) {
-            this.processExtractedText(extractedItems, new Date()); // Slanje u procesiranje
+            this.processExtractedText(extractedItems, new Date());
           }
           this.generateBill(preTagContent.innerHTML, url);
         } else {
@@ -64,7 +90,14 @@ export class QrScannerComponent implements OnInit {
         }
       }
     );
-}
+  }
+
+  ngOnDestroy() {
+    // Clear the scanner when the component is destroyed to free resources
+    if (this.scanner) {
+      this.scanner.clear();
+    }
+  }
 
   generateBill(content: string, urlHref: string): any {
     let vendor: string = '';
@@ -154,29 +187,13 @@ processExtractedText(extractedItems: string[][], date: Date): any[] {
       this.invoiceService.addExpense(expense);
     }
     this.isLoader = true;
+    navigator.vibrate(50);
     this.showSuccess(this.successTpl);
     setTimeout(() => {
       this.router.navigateByUrl('dashboard');
     }, 100);
 
     return items;
-  }
-
-  forceRefocus() {
-    const videoElement = document.querySelector('video');
-    if (videoElement) {
-    videoElement.focus(); // Tries to trigger autofocus
-    }
-  }
-
-  onScannerInitialized() {
-    this.isLoader = false;
-    const videoElement = document.querySelector('video');
-    if (videoElement) {
-      videoElement.setAttribute('autofocus', 'true');
-      videoElement.style.width = '100%';
-      videoElement.style.height = 'auto';
-    }
   }
   showSuccess(template: TemplateRef<any>) {
     this.toastService.show({ template, classname: 'bg-success text-light', delay: 100 });

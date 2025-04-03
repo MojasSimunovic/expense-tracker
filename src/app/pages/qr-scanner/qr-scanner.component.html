@@ -9,6 +9,7 @@
   }
   <zxing-scanner
     (camerasFound)="onScannerInitialized()"
+    (click)="forceRefocus()"
     [device]="selectedDevice"
     (scanSuccess)="onScanSuccess($event)"
   >

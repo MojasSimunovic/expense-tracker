@@ -148,22 +148,35 @@ processExtractedText(extractedItems: string[][], date: Date): any[] {
               excess: false
           });
       }
-  }
+    }
 
-  for (let expense of items) {
+    for (let expense of items) {
       this.invoiceService.addExpense(expense);
-  }
-  this.isLoader = true;
-  this.showSuccess(this.successTpl);
-  setTimeout(() => {
+    }
+    this.isLoader = true;
+    this.showSuccess(this.successTpl);
+    setTimeout(() => {
       this.router.navigateByUrl('dashboard');
-  }, 100);
+    }, 100);
 
-  return items;
-}
+    return items;
+  }
+
+  forceRefocus() {
+    const videoElement = document.querySelector('video');
+    if (videoElement) {
+    videoElement.focus(); // Tries to trigger autofocus
+    }
+  }
 
   onScannerInitialized() {
     this.isLoader = false;
+    const videoElement = document.querySelector('video');
+    if (videoElement) {
+      videoElement.setAttribute('autofocus', 'true');
+      videoElement.style.width = '100%';
+      videoElement.style.height = 'auto';
+    }
   }
   showSuccess(template: TemplateRef<any>) {
     this.toastService.show({ template, classname: 'bg-success text-light', delay: 100 });

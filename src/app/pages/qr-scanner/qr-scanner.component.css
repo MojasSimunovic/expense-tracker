@@ -9,6 +9,9 @@ zxing-scanner {
   width: 100%;
   height: 300px;
   max-width: 100%;
+  @media(max-width:980px) {
+    height: initial;
+  }
 }
 
 ::ng-deep zxing-scanner video {

@@ -6,6 +6,7 @@ import {
   signal,
   Signal,
 } from '@angular/core';
+
 import { OnInit } from '@angular/core';
 import { Expense } from '../../models/expense';
 import { ExpenseService } from '../../services/expense.service';
@@ -36,8 +37,8 @@ export class DashboardComponent implements OnInit {
   currentMonth = this.currentDate.getMonth(); // 0-based month
 
 	hoveredDate: NgbDate | null = null;
-  fromDate:  NgbDate | null = new NgbDate(this.currentYear, this.currentMonth + 1, 1);
-  toDate:  NgbDate | null = new NgbDate(this.currentYear, this.currentMonth + 1, new Date(this.currentYear, this.currentMonth + 1, 0).getDate());
+  fromDate:  NgbDate | null = new NgbDate(this.currentYear,  1, this.currentMonth + 1,);
+  toDate:  NgbDate | null = new NgbDate(this.currentYear, new Date(this.currentYear, this.currentMonth + 1, 0).getDate(), this.currentMonth + 1);
   datePipe = inject(DatePipe);
   expenses = signal<Expense[]>([]); // Stores all expenses
   category = signal<string>('All'); // Stores selected category

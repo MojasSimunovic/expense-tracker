@@ -1,6 +1,7 @@
 :host {
   text-align: center;
-  min-height: max-content;
+  /* min-height: max-content; */
+  min-height: 100svh;
 }
 
 h1 {
@@ -10,11 +11,6 @@ h1 {
 }
 .lead {
   font-weight: 500;
-}
-.home-btns {
-  display: flex;
-  justify-content: center;
-  gap: 2em;
 }
 
 .jumbotron {
@@ -81,41 +77,46 @@ img {
   }
 }
 
-
-
 .shadow {
   background-color: #1c1f58;
   filter: blur(2px);
   border-radius: 100%;
-  width: 50%;
+  width: 60%;
   height: 20px;
-  
   position: absolute;
-  inset: auto 10% -20px 0%;
-  bottom: 3.5em;
+  inset: auto 10% -20px 10%;
+  bottom: 5.5em;
   animation: shadow 1500ms infinite;
   transform-style: preserve-3d;
   will-change: transform,opacity;
   @media(max-width:980.5px) {
+    inset: auto 10% -20px 5%;
     margin-inline: auto;
     bottom: -1em;
-    width: 30%;
+    width: 20%;
   }
 }
 
 .home-btns {
+  display: flex;
   flex-wrap: wrap;
+  /* grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); */
+  gap: 2em;
+  justify-content: center;
+  align-items: center;
   padding-bottom: 10em;
   @media (max-width: 980.5px) {
     padding-bottom: 7em;
   }
 }
 
+
 .card-item {
   padding: 4em 2em;
   box-shadow: 6px 6px 8px lightgrey;
   border-radius: 20px;
   min-width: 380px;
+  min-height: 18em;
   max-width: 20em;
   text-align: center;
   transition: 0.4s ease-in-out;

@@ -42,44 +42,46 @@ export class ChartComponent implements OnInit {
   }
   totalAmount = computed(() => {
     const selectedMonth = this.currentMonth(); // Get selected month
-
-    return this.expenses()
+    const total = this.expenses()
       .filter((expense) => {
         const expenseMonth = new Date(expense.date).getMonth() + 1; // Extract month from expense.date
         return selectedMonth === '' || expenseMonth === parseInt(selectedMonth);
       })
       .reduce((sum, item) => sum + item.price, 0);
+    return parseFloat(total.toFixed(2));
   });
 
   previousMonthTotal = computed(() => {
     const selectedMonth = this.currentMonth(); // Get selected month
     const previousMonth = ((parseInt(selectedMonth) - 1 + 12) % 12) || 12; // Ensure it wraps around for January
     const previousMonthStr = String(previousMonth).padStart(2, '0'); 
-    return this.expenses()
+    const total =  this.expenses()
       .filter((expense) => {
         const expenseMonth = new Date(expense.date).getMonth() +1; // Extract month from expense.date
         return previousMonthStr === '' || expenseMonth === parseInt(previousMonthStr);
       })
       .reduce((sum, item) => sum + item.price, 0);
+    return parseFloat(total.toFixed(2));
   });
 
   secondToLastMonthTotal = computed(() => {
     const selectedMonth = this.currentMonth(); // Get selected month
     const previousMonth = ((parseInt(selectedMonth) - 2 + 12) % 12) || 12; // Ensure it wraps around for January
     const previousMonthStr = String(previousMonth).padStart(2, '0'); 
-    return this.expenses()
+    const total =  this.expenses()
       .filter((expense) => {
         const expenseMonth = new Date(expense.date).getMonth() +1; // Extract month from expense.date
         return previousMonthStr === '' || expenseMonth === parseInt(previousMonthStr);
       })
       .reduce((sum, item) => sum + item.price, 0);
+    return parseFloat(total.toFixed(2));
   });
 
 
   getPieChartData(categoryTotals: any) {
     return Object.keys(categoryTotals).map((category: string) => ({
       name: category,
-      value: categoryTotals[category],
+      value: parseFloat(categoryTotals[category].toFixed(2)),
     }));
   }
 
@@ -108,17 +110,31 @@ export class ChartComponent implements OnInit {
   updatePieChart() {
     const categoryTotals = this.calculateCategoryTotals(this.expenses());
     const pieData = this.getPieChartData(categoryTotals);
+  
     this.pieChartOptions = {
-      title: { text: `Current Month Total: RSD ${this.totalAmount()}`, left: 'center' },
-      tooltip: {
-        trigger: 'item',
+      title: { 
+        text: `Current Month Total: RSD ${this.totalAmount()}`, 
+        left: 'center' 
+      },
+      tooltip: { trigger: 'item' },
+      legend: { 
+        orient: 'horizontal',
+        left: '0', 
+        top: '10%',       
+        width: '80%',         
+        itemGap: 10,          
+        textStyle: { fontSize: 12 }
       },
       series: [
         {
           name: 'Expenses',
           type: 'pie',
           radius: '50%',
-          data: pieData, // Data for the pie chart
+          data: pieData, 
+          label: {
+            show: false, 
+          },
+          labelLine: { show: false }, // Hide the connecting lines
           emphasis: {
             itemStyle: {
               shadowBlur: 20,
@@ -127,33 +143,38 @@ export class ChartComponent implements OnInit {
             },
             animationType: 'scale',
             animationEasing: 'elasticOut',
-            animationDelay: function (idx: any) {
-              return Math.random() * 200;
-            }
+            animationDelay: () => Math.random() * 200,
           },
         },
       ],
     };
-    const echart = document.querySelector('.echart-container') as HTMLElement;
-    if (echart) {
-      echarts.init(echart).setOption(this.pieChartOptions);
-    }
   }
 
   updateBarChart() {
+    const currentDate = new Date(this.currentMonth()); // Ensure it's a valid Date object
+  
     this.barChartOptions = {
       title: { text: 'Total Expenses (Last 3 Months)', left: 'center' },
       tooltip: { trigger: 'axis' },
+      grid: { 
+        left: '2%',  
+        right: '2%', 
+        containLabel: true, 
+      },
       xAxis: { 
         type: 'category', 
-        data: [format(subMonths(this.currentMonth(), 2), 'MMMM'),format(subMonths(this.currentMonth(), 1), 'MMMM') , format(this.currentMonth(), 'MMMM')] // X-axis labels
+        data: [
+          format(subMonths(currentDate, 2), 'MMMM'),
+          format(subMonths(currentDate, 1), 'MMMM'),
+          format(currentDate, 'MMMM')
+        ] 
       },
-      yAxis: { type: 'value' }, // Y-axis for expense amounts
+      yAxis: { type: 'value' },
       series: [{
         name: 'Total Expenses',
         type: 'bar',
-        data: [this.secondToLastMonthTotal(), this.previousMonthTotal(), this.totalAmount()], // Dummy data: Total expenses per month
-        color: '#41cf8d' // Bar color
+        data: [this.secondToLastMonthTotal(), this.previousMonthTotal(), this.totalAmount()],
+        color: '#41cf8d'
       }]
     };
   }

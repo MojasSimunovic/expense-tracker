@@ -47,3 +47,8 @@ h2 {
 	width: 1px !important;
 	white-space: nowrap !important; /* 3 */
 }
+
+body {
+  min-height: 100svh !important;
+}
+

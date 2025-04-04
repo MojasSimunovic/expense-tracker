@@ -3,19 +3,14 @@
 }
 
 .container-main {
-  /* padding-top: 0 !important; */
-  min-height: max-content;
+  min-height: 85svh;
   padding-bottom: 3em;
   background-color: #f1f1f1;
-  overflow-x: hidden;
 }
 
 .navbar-collapse {
   @media (max-width: 991px) {
     transition: 0.35s ease;
-    /* &.show {
-      padding-bottom: 1.4em;
-    } */
     .navbar-nav {
       margin-inline: 0 !important;
     }
@@ -33,7 +28,9 @@
   color: #ffffff;
 }
 
-.noise_noise {
+/*will try to implement it later on, it does not look good atm */
+
+/* .noise_noise {
   position: fixed;
   top: 0;
   left: 0;
@@ -89,4 +86,4 @@
   100% {
       transform: translate3d(-7rem, 0, 0);
   }
-}
+} */

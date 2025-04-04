@@ -23,7 +23,7 @@ import { FormsModule } from '@angular/forms';
 export class QrScannerComponent implements OnInit {
   @ViewChild('successTpl') successTpl!: TemplateRef<any>;
   success: boolean = true;
-  isLoader: boolean = true;
+  isLoader: boolean = false;
 
   datePipe = inject(DatePipe);
   http = inject(HttpClient);
@@ -56,15 +56,16 @@ export class QrScannerComponent implements OnInit {
     );
   }
 
-  onSubmit(formValue: { url: string }) {
+  async onSubmit(formValue: { url: string }) {
     const url = formValue.url;
-    this.onScanSuccess(url);
+    await this.onScanSuccess(url);
     formValue.url = '';
-    navigator.vibrate(50);
+    navigator.vibrate?.(50); // Optional chaining to avoid errors on unsupported devices
     this.showSuccess(this.successTpl);
+  
     setTimeout(() => {
       this.router.navigateByUrl('dashboard');
-    }, 100); // Call onScanSuccess with the URL from the form
+    }, 300); // Increased delay to allow UI updates
   }
 
   onScanSuccess(url: string) {

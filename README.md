@@ -1,5 +1,12 @@
 # ExpenseTracker
 
+Link to project live version: 
+https://expense-tracker-8eb06.web.app/home
+
+Credentials to dummy account if you don't want to create account: 
+mail: test@test.com
+password: test1994  
+
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.1.
 
 ## Development server

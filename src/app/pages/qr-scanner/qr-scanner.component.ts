@@ -58,14 +58,10 @@ export class QrScannerComponent implements OnInit {
 
   async onSubmit(formValue: { url: string }) {
     const url = formValue.url;
-    await this.onScanSuccess(url);
-    formValue.url = '';
-    navigator.vibrate?.(50); // Optional chaining to avoid errors on unsupported devices
+    this.onScanSuccess(url);
+    this.url = '';
+    navigator.vibrate?.(50);
     this.showSuccess(this.successTpl);
-  
-    setTimeout(() => {
-      this.router.navigateByUrl('dashboard');
-    }, 300); // Increased delay to allow UI updates
   }
 
   onScanSuccess(url: string) {
@@ -94,7 +90,6 @@ export class QrScannerComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    // Clear the scanner when the component is destroyed to free resources
     if (this.scanner) {
       this.scanner.clear();
     }

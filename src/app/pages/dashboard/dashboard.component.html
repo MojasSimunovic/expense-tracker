@@ -94,7 +94,7 @@
           </tr>
         </thead>
         <tbody>
-          @for (expense of filteredExpenses(); track $index) {
+          @for (expense of displayedExpenses(); track $index) {
             <tr [ngStyle]="assignExcessStyle(expense.excess)">
               <ng-container>
                 <td >
@@ -183,14 +183,16 @@
           }
         </tfoot>
       </table>
+      <div class="text-center mt-3">
+        <button 
+          class="btn btn-secondary"
+          (click)="loadMore()"
+          *ngIf="itemsToShow() < filteredExpenses().length"
+        >
+          Load More
+        </button>
+      </div>
     </div>
-    <!-- <div class="pagination">
-      <button (click)="changePage(currentPage() - 1)" [disabled]="currentPage() === 1">Previous</button>
-      
-      <span>Page {{ currentPage() }} of {{ totalPages }}</span>
-    
-      <button (click)="changePage(currentPage() + 1)" [disabled]="currentPage() === totalPages">Next</button>
-    </div> -->
   } @else {
     <div class="text-center">
       <h3 class="mb-3">These are not the expenses you are looking for!</h3>

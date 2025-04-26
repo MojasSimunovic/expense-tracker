@@ -42,15 +42,10 @@ export class DashboardComponent implements OnInit {
   datePipe = inject(DatePipe);
   expenses = signal<Expense[]>([]); // Stores all expenses
   category = signal<string>('All'); // Stores selected category
-
   searchInput = signal<string>('');
-
   changedDate = signal<Boolean>(false);
-  
   sortedByDate = signal<boolean>(true);
-
-  currentPage = signal<number>(1);
-  itemsPerPage = 1;
+  itemsToShow = signal<number>(5); 
 
   filteredExpenses = computed(() => {
     const category = this.category();
@@ -97,15 +92,9 @@ export class DashboardComponent implements OnInit {
     }
   });
 
-  get totalPages() {
-    return Math.ceil(this.filteredExpenses().length / this.itemsPerPage);
-  }
-
-  changePage(newPage: number) {
-    if (newPage >= 1 && newPage <= this.totalPages) {
-      this.currentPage.set(newPage);
-    }
-  }
+  displayedExpenses = computed(() => {
+    return this.filteredExpenses().slice(0, this.itemsToShow());
+  });
 
   filteredUnnecessaryExpenses = computed(() => {
     return this.filteredExpenses().reduce((acc, expense) => {
@@ -203,4 +192,8 @@ export class DashboardComponent implements OnInit {
 		const parsed = this.formatter.parse(input);
 		return parsed && this.calendar.isValid(NgbDate.from(parsed)) ? NgbDate.from(parsed) : currentValue;
 	}
+
+  loadMore() {
+    this.itemsToShow.update(value => value + 5); // Load 5 more on each click
+  }
 }

@@ -4,35 +4,41 @@
 
 .sr-only {
   border: 0 !important;
-	clip-path: inset(50%) !important; /* 2 */
-	height: 1px !important;
-	margin: -1px !important;
-	overflow: hidden !important;
-	padding: 0 !important;
-	width: 1px !important;
-	white-space: nowrap !important; /* 3 */
+  clip-path: inset(50%) !important;
+  height: 1px !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  padding: 0 !important;
+  width: 1px !important;
+  white-space: nowrap !important;
 }
 
-#qr-scanner {
+/* Correcting selector */
+.qr-scanner-wrapper {
   width: 100%;
-  max-width: 500px; /* Adjust width to fit your design */
+  max-width: 500px;
   margin: 0 auto;
 }
 
-#qr-scanner__dashboard {
-  #html5-qrcode-button-camera-permission {
-    border-radius: 20px;
-    padding: 0.5em ;
-  }
+/* Fix for inner button */
+#qr-scanner__dashboard #html5-qrcode-button-camera-permission {
+  border-radius: 20px;
+  padding: 0.5em;
 }
 
+/* Fixed from SCSS to CSS */
 .form-url-input {
   max-width: 500px;
   margin: 0 auto;
-  label {
-    margin-bottom: 0.5em;
-  }
-  input {
-    margin-bottom: 1.25em;
-  }
+  text-align: center;
+}
+
+.form-url-input label {
+  margin-bottom: 0.5em;
+  display: block;
+}
+
+.form-url-input input {
+  margin-bottom: 1.25em;
+  width: 100%;
 }

@@ -1,19 +1,44 @@
-<div class="container">
+<div class="container qr-scanner-wrapper">
   <h1 class="text-center">QR Scanner</h1>
-  @if(isLoader === true) {
-    <div class="col-12 text-center">
-      <div class="spinner-border" role="status">
-        <span class="sr-only">Loading...</span>
-      </div>
+
+  <div *ngIf="isLoader" class="col-12 text-center">
+    <div class="spinner-border" role="status">
+      <span class="sr-only">Loading...</span>
     </div>
-  }
-  <div id="qr-scanner"></div>
-  <h2 class="text-center mt-5">Or just paste scanned url</h2>
+  </div>
+
+  <div class="scanner-wrapper">
+    <zxing-scanner 
+      [formats]="formats"
+      (camerasFound)="onCamerasFound($event)"
+      (scanSuccess)="onScanSuccess($event)"
+      [torch]="true"
+      [tryHarder]="true"
+      [autofocusEnabled]="true"
+      [timeBetweenScans]="1000"
+      [previewFitMode]="'cover'">
+    </zxing-scanner>
+  </div>
+
+  <h2 class="text-center mt-5">Or just paste scanned URL</h2>
+
   <form (ngSubmit)="onSubmit(urlForm.value)" #urlForm="ngForm" class="text-center form-url-input">
     <label for="url">URL</label>
-    <input class="form-control" name="url" type="text" [(ngModel)]="url" required placeholder="Paste the URL here">
-    <button class="btn btn-success" type="submit">Submit</button>
+    <input
+      class="form-control"
+      name="url"
+      id="url"
+      type="text"
+      [(ngModel)]="url"
+      required
+      placeholder="Paste the URL here"
+    />
+    <button class="btn btn-success mt-3" type="submit">Submit</button>
   </form>
-	<ng-template #succes sTpl> Scan Successful </ng-template>
+
+  <ng-template #successTpl>
+    <div class="text-center text-success mt-4">Scan Successful!</div>
+  </ng-template>
+
   <app-toasts aria-live="polite" aria-atomic="true"></app-toasts>
 </div>

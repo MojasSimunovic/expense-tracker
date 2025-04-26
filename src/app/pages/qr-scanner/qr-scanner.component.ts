@@ -9,18 +9,19 @@ import { DatePipe } from '@angular/common';
 import { NgbToastModule } from '@ng-bootstrap/ng-bootstrap';
 import { ToastService } from '../../services/toast.service';
 import { ToastsContainer } from '../../components/toasts-container/toasts-container.component'
-import { Html5QrcodeScanner } from 'html5-qrcode';
+import { BarcodeFormat } from '@zxing/browser';
 import { FormsModule } from '@angular/forms';
+import { NgIf } from '@angular/common';
 
 
 @Component({
   selector: 'app-qr-scanner',
-  imports: [ZXingScannerModule, NgbToastModule, ToastsContainer,FormsModule],
+  imports: [ZXingScannerModule, NgbToastModule, ToastsContainer,FormsModule, NgIf],
   templateUrl: './qr-scanner.component.html',
   styleUrl: './qr-scanner.component.css',
   providers: [DatePipe]
 })
-export class QrScannerComponent implements OnInit {
+export class QrScannerComponent {
   @ViewChild('successTpl') successTpl!: TemplateRef<any>;
   success: boolean = true;
   isLoader: boolean = false;
@@ -29,7 +30,6 @@ export class QrScannerComponent implements OnInit {
   http = inject(HttpClient);
   router = inject(Router);
   invoiceService = inject(ExpenseService);
-  selectedDevice?: MediaDeviceInfo;
   invoiceData: any[] = [];
 
   url?: string;
@@ -42,29 +42,34 @@ export class QrScannerComponent implements OnInit {
 
   scannedResult: string | null = null;
 
-  private scanner?: Html5QrcodeScanner;
+  hasDevices: boolean = false;
+  availableDevices: MediaDeviceInfo[] = [];
+  selectedDevice: MediaDeviceInfo | undefined;
+  sTpl!: TemplateRef<any>;
+  formats: BarcodeFormat[] = [BarcodeFormat.QR_CODE];
 
-  ngOnInit(): void {
-    this.scanner = new Html5QrcodeScanner(
-      'qr-scanner', 
-      { fps: 10, qrbox: 200 }, // Set frame rate and size of the QR box
-      true
-    );
-    this.scanner.render(
-      this.onScanSuccess.bind(this),
-      (errorMessage: string) => console.error('QR Code scan error:', errorMessage) 
-    );
+  onCamerasFound(devices: MediaDeviceInfo[]): void {
+    this.hasDevices = true;
+    this.availableDevices = devices;
+    const rearCamera = devices.find(device => device.label.toLowerCase().includes('back'));
+    if (rearCamera) {
+      this.selectedDevice = rearCamera;
+    } else {
+      this.selectedDevice = devices[0];
+    }
   }
 
-  async onSubmit(formValue: { url: string }) {
-    const url = formValue.url;
-    this.onScanSuccess(url);
-    this.url = '';
-    navigator.vibrate?.(50);
-    this.showSuccess(this.successTpl);
+  onScanSuccess(result: string): void {
+    if (result) {
+      this.scannedResult = result;
+      this.onScanSuccessCallback(result); // Reusing your previous logic
+      setTimeout(() => {
+        this.router.navigateByUrl('dashboard');
+      }, 100);
+    }
   }
 
-  onScanSuccess(url: string) {
+  onScanSuccessCallback(url: string): void {
     const parser = new DOMParser();
     this.invoiceService.getInvoiceData(url).subscribe(
       (data) => {
@@ -89,10 +94,37 @@ export class QrScannerComponent implements OnInit {
     );
   }
 
-  ngOnDestroy() {
-    if (this.scanner) {
-      this.scanner.clear();
-    }
+  async onSubmit(formValue: { url: string }) {
+    const url = formValue.url;
+    this.onScanSuccess(url);
+    this.url = '';
+    navigator.vibrate?.(50);
+    this.showSuccess(this.successTpl);
+  }
+
+  async processUrl(url: string) {
+    const parser = new DOMParser();
+    this.invoiceService.getInvoiceData(url).subscribe(
+      (data) => {
+        const panelBodyData = parser.parseFromString(data, 'text/html');
+        const preTagContent = panelBodyData.querySelector('pre');
+        if (preTagContent) {
+          const extractedItems = this.extractTextBetweenHeadings(preTagContent.innerHTML);
+          if (extractedItems) {
+            this.processExtractedText(extractedItems, new Date());
+          }
+          this.generateBill(preTagContent.innerHTML, url);
+        } else {
+          console.warn('preTagContent is null');
+        }
+      },
+      (error) => {
+        console.error('Error fetching journal:', error);
+        if (error.error) {
+          console.error('Error details:', error.error);
+        }
+      }
+    );
   }
 
   generateBill(content: string, urlHref: string): any {
@@ -154,7 +186,7 @@ export class QrScannerComponent implements OnInit {
     return mergedItems;
 }
 
-processExtractedText(extractedItems: string[][], date: Date): any[] {
+  processExtractedText(extractedItems: string[][], date: Date): any[] {
   const items: Expense[] = [];
 
   for (const itemParts of extractedItems) {

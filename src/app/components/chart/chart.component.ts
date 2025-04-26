@@ -151,7 +151,8 @@ export class ChartComponent implements OnInit {
   }
 
   updateBarChart() {
-    const currentDate = new Date(this.currentMonth()); // Ensure it's a valid Date object
+    const now = new Date();
+    const currentDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
   
     this.barChartOptions = {
       title: { text: 'Total Expenses (Last 3 Months)', left: 'center' },

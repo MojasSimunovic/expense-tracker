@@ -34,11 +34,11 @@ export class DashboardComponent implements OnInit {
 
   currentDate = new Date();
   currentYear = this.currentDate.getFullYear();
-  currentMonth = this.currentDate.getMonth(); // 0-based month
+  currentMonth = this.currentDate.getMonth(); 
 
 	hoveredDate: NgbDate | null = null;
-  fromDate:  NgbDate | null = new NgbDate(this.currentYear,  1, this.currentMonth + 1,);
-  toDate:  NgbDate | null = new NgbDate(this.currentYear, new Date(this.currentYear, this.currentMonth + 1, 0).getDate(), this.currentMonth + 1);
+  fromDate: NgbDate | null = new NgbDate(this.currentYear, this.currentMonth + 1, 1);
+  toDate: NgbDate | null = new NgbDate(this.currentYear, this.currentMonth + 1, new Date(this.currentYear, this.currentMonth + 1, 0).getDate());
   datePipe = inject(DatePipe);
   expenses = signal<Expense[]>([]); // Stores all expenses
   category = signal<string>('All'); // Stores selected category

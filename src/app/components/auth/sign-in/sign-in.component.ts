@@ -3,12 +3,13 @@ import { AuthService } from '../../../services/auth.service';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { HeroBannerComponent } from "../../hero-banner/hero-banner.component";
+import { NgIf } from '@angular/common';
 
 declare var bootstrap: any;
 
 @Component({
   selector: 'app-sign-in',
-  imports: [FormsModule, HeroBannerComponent],
+  imports: [FormsModule, HeroBannerComponent, NgIf],
   templateUrl: './sign-in.component.html',
   styleUrls: ['./sign-in.component.css']
 })
@@ -34,6 +35,10 @@ export class SignInComponent {
 
   closeModal() {
     document.getElementById('auth-close')?.click();
+    this.registerObject = {
+      email : '',
+      password : ''
+    }
   }
 
   signInWithGoogle() {
@@ -50,6 +55,6 @@ export class SignInComponent {
       .catch(err => {
       console.error('Error:this is', err);
       this.submitError = true;
-      });
+    });
   }
 }

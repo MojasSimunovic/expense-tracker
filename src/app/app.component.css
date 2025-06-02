@@ -1,26 +1,44 @@
-.nav-list {
-  max-width: 100px;
-  min-height: 100%;
-  padding: 1.75em;
-  display: flex;
-  flex-direction: column;
-  gap: 1em;
-  background-color: lightgrey;
-}
-
-.nav-list a {
-  color: #111111;
-  transition: 0.4s ease;
-}
-
-.link-active {
-  color: goldenrod !important;
-}
-
-.nav-list a:hover {
-  color: #615252;
-}
-
 main {
-  min-height: 100svh;
+  min-height: 100dvh;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1a1a1a;
+  cursor: pointer;
+}
+
+.logo-icon {
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+}
+
+.navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  padding: 1rem 2rem;
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  z-index: 100;
+  transition: all 0.3s ease;
+}
+.login-btn {
+  margin-inline: auto;
+}
+
+footer {
+  background: rgba(44, 44, 44, 0.95);
 }

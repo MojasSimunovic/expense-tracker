@@ -6,15 +6,9 @@ import { authGuard, authGuardLoggedIn } from './guard/auth.guard';
 import { LayoutComponent } from './components/layout/layout.component';
 import { QrScannerComponent } from './pages/qr-scanner/qr-scanner.component';
 import { BillsComponent } from './pages/bills/bills.component';
-import { SignUpComponent } from './components/auth/sign-up/sign-up.component';
 import { SignInComponent } from './components/auth/sign-in/sign-in.component';
 
 export const routes: Routes = [
-  {
-    path: 'signup', 
-    component:SignUpComponent, 
-    canActivate: [authGuardLoggedIn],
-  },
   {
     path: 'login',
     component: SignInComponent,

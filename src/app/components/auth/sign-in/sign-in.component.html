@@ -1,27 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <div class="container nav-container d-flex justify-content-between">
-    <button class="navbar-brand" routerLink="">
-      <img src="/assets/images/pie-chart-vector.svg" alt="App Logo" width="40"
-    /></button>
-    <button data-bs-toggle="modal" data-bs-target="#authModal">Login</button>
-  </div>
-</nav>
-<section class="vh-100">
-  <div class="jumbotron jumbotron-fluid py-5 mb-5">
-    <div class="container">
-      <div class="content">
-        <h1 class="display-2">SmartTrack</h1>
-        <p class="lead">Effortlessly track expenses and store your important bills.</p>
-        <button button class="btn btn-outline-light btn-login" data-bs-toggle="modal" data-bs-target="#authModal">Login/Register</button>
-      </div>
-      <div class="animation-container">
-        <img src="/assets/images/smartTrackerphone(1).png" alt="">
-        <div class="shadow"></div>
-      </div>
-    </div>
-  </div>
-</section>
-
+<app-hero-banner></app-hero-banner>
 <div #authModal class="modal fade" id="authModal" tabindex="-1" aria-labelledby="authModalLabel" aria-hidden="true" >
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content bg-dark text-white">

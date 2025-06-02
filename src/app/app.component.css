@@ -20,3 +20,7 @@
 .nav-list a:hover {
   color: #615252;
 }
+
+main {
+  min-height: 100svh;
+}

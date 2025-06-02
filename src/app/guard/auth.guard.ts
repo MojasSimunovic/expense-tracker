@@ -13,7 +13,7 @@ export const authGuard: CanActivateFn = async (route, state) => {
   if (user) {
     return true;
   } else {
-    router.navigateByUrl('login');
+    router.navigateByUrl('home');
     return false;
   }
 };
@@ -24,7 +24,7 @@ export const authGuardLoggedIn: CanActivateFn = async (route, state) => {
   const user = await firstValueFrom(auth.authState);
 
   if (user) {
-    router.navigateByUrl('home'); 
+    router.navigateByUrl('dashboard'); 
     return false;
   } else {
     return true;

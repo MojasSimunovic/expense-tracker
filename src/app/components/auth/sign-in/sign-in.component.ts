@@ -2,12 +2,13 @@ import { Component, ElementRef, inject, ViewChild } from '@angular/core';
 import { AuthService } from '../../../services/auth.service';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
+import { HeroBannerComponent } from "../../hero-banner/hero-banner.component";
 
 declare var bootstrap: any;
 
 @Component({
   selector: 'app-sign-in',
-  imports: [FormsModule],
+  imports: [FormsModule, HeroBannerComponent],
   templateUrl: './sign-in.component.html',
   styleUrls: ['./sign-in.component.css']
 })

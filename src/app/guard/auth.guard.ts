@@ -13,7 +13,7 @@ export const authGuard: CanActivateFn = async (route, state) => {
   if (user) {
     return true;
   } else {
-    router.navigateByUrl('home');
+    router.navigateByUrl('login');
     return false;
   }
 };

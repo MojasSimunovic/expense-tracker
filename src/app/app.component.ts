@@ -8,6 +8,8 @@ import { AuthService } from './services/auth.service';
 import { User } from '@firebase/auth';
 import { Observable } from 'rxjs';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { NgClass } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-root',
   imports: [
@@ -16,6 +18,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
     MatSidenavModule,
     MatIconModule,
     MatButtonModule,
+    FormsModule,NgClass
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
@@ -24,6 +27,12 @@ export class AppComponent {
   router = inject(Router);
   authService = inject(AuthService);
   userSignal = toSignal(this.authService.user$);
+  error: null;
+  isDarkMode = false;
+
+  constructor() {
+    this.error = null;
+  }
 
   closeNavbar() {
     const navbarCollapse = document.getElementById('navbarNav') as HTMLElement;
@@ -38,10 +47,23 @@ export class AppComponent {
     }
   }
 
+  toggleTheme() {
+    console.log(this.isDarkMode);
+    // this.isDarkMode = !this.isDarkMode;
+  }
+
   logOut() {
     this.authService.logOut().then(() => {
-      this.router.navigateByUrl('login');
     }).catch(err => console.error('Logout Error:', err));
+  }
+  async onLogout() {
+    this.error = null;
+    this.router.navigate(['login']);
+    try {
+      await this.authService.logOut()
+    } catch (err: any) {
+      this.error = err.message;
+    }
   }
 }
 

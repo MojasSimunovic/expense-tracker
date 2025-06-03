@@ -15,8 +15,8 @@ export const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: 'login',
-    pathMatch: 'full'
+    redirectTo: 'home',
+    pathMatch: 'full',
   },
   {
     path: 'home',
@@ -48,5 +48,5 @@ export const routes: Routes = [
     component: BillsComponent,
     canActivate: [authGuard],
   },
-  // { path: '**', redirectTo: '' },
+  { path: '**', redirectTo: '' },
 ];

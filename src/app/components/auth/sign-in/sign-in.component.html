@@ -1,5 +1,5 @@
 <app-hero-banner></app-hero-banner>
-<div #authModal class="modal fade" id="authModal" tabindex="-1" aria-labelledby="authModalLabel" aria-hidden="true" >
+<div #authModal class="modal fade" id="authModal" tabindex="-1" aria-labelledby="authModalLabel" aria-hidden="true" (hidden.bs.modal)="onModalClose(form, formSignup)" >
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="custom-modal-header">

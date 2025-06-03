@@ -1,17 +1,15 @@
-<div class="container pt-5 mb-5">
-  <div class="home-btns">
-    <a class="card-item" routerLink="/dashboard">
-      <mat-icon> list_alt</mat-icon>
-      <h2>See dashboard with expenses</h2>
-    </a>
-    <a class="card-item" routerLink="/qr">
-      <mat-icon>qr_code_2</mat-icon>
-      <h2>Scan bill QR <br />code</h2>
-    </a>
-    <a class="card-item" routerLink="/new">
-      <mat-icon>create</mat-icon>
-      <h2>Create a new expense</h2>
-    </a>
+<div class="container">
+  <div class="hero">
+    <h1>Smart Expense Tracking</h1>
+    <p>Take control of your finances with intelligent tracking, beautiful insights, and seamless bill scanning</p>
+  </div>
+
+</div>
+<div class="container">
+  <div class="action-cards">
+    @for(card of cards;track $index) {
+      <app-card [card]="card" [routerLink]="card.link"></app-card>
+    }
   </div>
 </div>
 <div class="container">

@@ -15,19 +15,23 @@ main {
   color: #1a1a1a;
   cursor: pointer;
 }
-.bg-dark .logo, .bg-dark .nav-link {
+
+.bg-dark-nav .logo { 
   color: #f1f1f1 !important;
 }
 
-.bg-dark .nav-link:hover {
-  color: gray !important;
+.bg-dark-nav .navbar-nav .nav-item .nav-link {
+  color: #f1f1f1 !important;
+  &:hover {
+    color: gray !important;
+  }
 }
 
-.bg-dark .navbar-toggler {
+.bg-dark-nav .navbar-toggler {
   border: 1px solid #f1f1f1 !important;
 }
 
-.bg-dark .navbar-toggler-icon {
+.bg-dark-nav .navbar-toggler-icon {
   filter: invert(1);
 }
 
@@ -57,6 +61,10 @@ main {
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   z-index: 100;
   transition: all 0.3s ease;
+}
+
+.bg-dark-nav {
+  background-color: transparent;
 }
 
 .nav-item {
@@ -100,8 +108,8 @@ footer {
 
 .toggle-wrapper {
   position: relative;
-  width: 50px;
-  height: 22px;
+  width: 53px;
+  height: 23px;
 }
 
 .toggle-input {
@@ -118,7 +126,8 @@ footer {
 }
 
 .toggle-slider {
- position: absolute;
+  position: absolute;
+  border: 1px solid lightcyan;
   top: 0;
   left: 0;
   right: 0;

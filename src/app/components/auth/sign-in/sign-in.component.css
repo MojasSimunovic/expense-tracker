@@ -35,15 +35,6 @@
   animation: shimmer 3s ease-in-out infinite;
 }
 
-/* .tabs {
-  display: flex;
-  border-radius: 12px;
-  padding: 4px;
-  margin-bottom: 1rem;
-  position: relative;
-  z-index: 5;
-} */
-
 .tab-navigation {
   display: flex;
   background: rgba(255, 255, 255, 0.15);

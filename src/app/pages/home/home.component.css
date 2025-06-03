@@ -1,7 +1,7 @@
 :host {
   text-align: center;
   min-height: 100dvh;
-  padding-top: 8em;
+  padding-top: 12em;
 }
 
 .content {
@@ -99,6 +99,34 @@ h2 {
   height: auto;
   width: auto;
   font-size: 4em;
+}
+
+.action-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-bottom: 4rem;
+}
+
+.hero {
+  padding-block: 8em;
+}
+
+.hero h1 {
+  font-size: 3rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero p {
+  font-size: 1.2rem;
+  opacity: 0.9;
+  max-width: 600px;
+  margin: 0 auto;
 }
 
 @-webkit-keyframes snake {

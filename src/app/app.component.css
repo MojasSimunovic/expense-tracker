@@ -84,8 +84,7 @@ main {
 }
 
 footer {
-  background: #121212;
-  box-shadow: 0px 4px 18px 0px #ffffff45;
+  background: #121212ec; 
 }
 
 .toggle-wrapper:active .toggle-button {

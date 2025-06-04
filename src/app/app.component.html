@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg" [ngClass]="{'bg-dark-nav text-white': isDarkMode}">
+<nav class="navbar navbar-expand-lg" [ngClass]="{'bg-dark-nav text-white': isDarkMode()}">
   <div class="container nav-container d-flex justify-content-between">
     <div class="logo" routerLink="home">
       <div class="logo-icon">S</div>
@@ -49,11 +49,10 @@
               >Scanned Bills</a
             >
           </li>
-        }
-
           <li class="theme-toggle">
             <div class="toggle-wrapper">
-              <input type="checkbox" id="themeToggle" class="toggle-input" (change)="toggleTheme()" [(ngModel)]="isDarkMode">
+              <input type="checkbox" id="themeToggle" class="toggle-input" [checked]="isDarkMode()"
+              (change)="toggleTheme()">
               <label for="themeToggle" class="toggle-slider">
                 <div class="toggle-button">
                   <svg class="sun-icon" viewBox="0 0 24 24" fill="#fbbf24" stroke="#fbbf24" stroke-width="2" stroke-linecap="round">
@@ -74,6 +73,7 @@
               </label>
             </div>
           </li> 
+        }
       </ul>
       <form class="d-flex">
         @if(userSignal()) {
@@ -85,7 +85,7 @@
     </div>
   </div>
 </nav>
-<main class="container-main" [ngClass]="{'dark-mode': isDarkMode}">
+<main class="container-main" [ngClass]="{'dark-mode': isDarkMode()}">
   <router-outlet />
 </main>
 

@@ -28,10 +28,12 @@ export class AppComponent {
   authService = inject(AuthService);
   userSignal = toSignal(this.authService.user$);
   error: null;
-  isDarkMode = false;
+  public readonly isDarkMode = this.authService.isDarkMode;
+  public readonly currentThemeMode = this.authService.currentThemeMode;
 
   constructor() {
     this.error = null;
+    console.log(this.isDarkMode())
   }
 
   closeNavbar() {
@@ -48,8 +50,7 @@ export class AppComponent {
   }
 
   toggleTheme() {
-    console.log(this.isDarkMode);
-    // this.isDarkMode = !this.isDarkMode;
+    this.authService.toggleTheme();
   }
 
   logOut() {

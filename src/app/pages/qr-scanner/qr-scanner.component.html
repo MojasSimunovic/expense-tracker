@@ -32,8 +32,9 @@
       [(ngModel)]="url"
       required
       placeholder="Paste the URL here"
+      [ngClass]="isDarkMode() ? 'bg-dark text-white':''"
     />
-    <button class="btn btn-success mt-3" type="submit">Submit</button>
+    <button class="submit-btn" type="submit">Submit</button>
   </form>
 
   <ng-template #successTpl>

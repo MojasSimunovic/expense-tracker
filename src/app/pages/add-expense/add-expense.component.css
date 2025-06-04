@@ -10,6 +10,10 @@ form {
   }
 }
 
+.bg-dark {
+  box-shadow: 6px 3px 20px #383737;
+}
+
 .form-field {
   display: flex;
   flex-direction: column;

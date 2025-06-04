@@ -45,6 +45,8 @@ export class DashboardComponent implements OnInit {
   changedDate = signal<Boolean>(false);
   sortedByDate = signal<boolean>(true);
   itemsToShow = signal<number>(5); 
+  expenseService = inject(ExpenseService);
+  router = inject(Router);
   isDarkMode = computed(() => {
     return this.themeService.isDarkMode();
   });
@@ -110,9 +112,6 @@ export class DashboardComponent implements OnInit {
   totalAmount = computed(() =>
     this.filteredExpenses().reduce((sum, item) => sum + item.price, 0)
   );
-
-  constructor(private expenseService: ExpenseService, private router: Router) {}
-
   ngOnInit(): void {
     this.expenseService.getAll().subscribe((data) => {
       this.expenses.set(data);

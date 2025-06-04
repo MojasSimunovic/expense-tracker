@@ -1,12 +1,13 @@
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, effect, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgxEchartsDirective, provideEchartsCore } from 'ngx-echarts';
 import * as echarts from 'echarts/core';
-import { EChartsCoreOption } from 'echarts/core';
 import { DatePipe } from '@angular/common';
 import { ExpenseService } from '../../services/expense.service';
 import { Expense } from '../../models/expense';
 import { subMonths, format } from 'date-fns';
+import { AuthService } from '../../services/auth.service';
+import { color } from 'echarts';
 
 @Component({
   selector: 'app-chart',
@@ -16,6 +17,8 @@ import { subMonths, format } from 'date-fns';
   providers: [provideEchartsCore({ echarts }), DatePipe],
 })
 export class ChartComponent implements OnInit {
+
+  themeService = inject(AuthService);
   datePipe = inject(DatePipe);
   expenses = signal<Expense[]>([]);
   expenseService = inject(ExpenseService);
@@ -29,6 +32,11 @@ export class ChartComponent implements OnInit {
 
   secondToLastTotal?: number;
 
+  isDarkMode = computed(() => {
+    return this.themeService.isDarkMode();
+  });
+    
+
   ngOnInit(): void {
         // Get all expenses from the service and set the Signal
         this.expenseService.getAll().subscribe((data) => {
@@ -39,6 +47,14 @@ export class ChartComponent implements OnInit {
         this.currentMonth.set(
           this.datePipe.transform(Date.now(), 'MM')?.toString() || ''
         );
+  }
+
+  constructor () {
+    effect(()=> {
+      console.log(this.themeService.isDarkMode());
+      this.updatePieChart(); 
+      this.updateBarChart();
+    });
   }
   totalAmount = computed(() => {
     const selectedMonth = this.currentMonth(); // Get selected month
@@ -97,7 +113,6 @@ export class ChartComponent implements OnInit {
       );
     });
 
-    // Calculate totals per category
     return currentMonthExpenses.reduce((acc: any, expense: Expense) => {
       if (acc[expense.category]) {
         acc[expense.category] += expense.price;
@@ -114,26 +129,44 @@ export class ChartComponent implements OnInit {
     this.pieChartOptions = {
       title: { 
         text: `Current Month Total: RSD ${this.totalAmount()}`, 
-        left: 'center' 
+        left: 'center',
+        textStyle: {
+          color: this.isDarkMode() ? '#ffffff' : '#333333'
+        },
       },
-      tooltip: { trigger: 'item' },
+      tooltip: { 
+        trigger: 'item',
+        backgroundColor: this.isDarkMode() ? '#1f1f1f' : '#ffffff',
+        borderColor: this.isDarkMode() ? '#444' : '#ccc',
+        textStyle: {
+          color: this.isDarkMode() ? '#ffffff' : '#333333'
+        } 
+      },
       legend: { 
         orient: 'horizontal',
         left: '0', 
         top: '10%',       
         width: '80%',         
         itemGap: 10,          
-        textStyle: { fontSize: 12 }
+        textStyle: { 
+          fontSize: 12,
+          color: this.themeService.isDarkMode() ? '#ffffff' : '#333333'
+        }
       },
       series: [
+        
         {
           name: 'Expenses',
           type: 'pie',
-          radius: '50%',
+          radius: ['50%', '80%'],
+          center: ['50%', '50%'],
+          avoidLabelOverlap: false,
           data: pieData, 
+          
           label: {
             show: false, 
           },
+          
           labelLine: { show: false }, // Hide the connecting lines
           emphasis: {
             itemStyle: {
@@ -145,6 +178,7 @@ export class ChartComponent implements OnInit {
             animationEasing: 'elasticOut',
             animationDelay: () => Math.random() * 200,
           },
+          
         },
       ],
     };
@@ -155,8 +189,22 @@ export class ChartComponent implements OnInit {
     const currentDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
   
     this.barChartOptions = {
-      title: { text: 'Total Expenses (Last 3 Months)', left: 'center' },
-      tooltip: { trigger: 'axis' },
+      title: { 
+        text: 'Total Expenses (Last 3 Months)',
+        textStyle: {
+          color: this.isDarkMode() ? '#ffffff' : '#333333'
+        },
+        left: 'center',
+        
+      },
+      tooltip: { 
+        trigger: 'axis',
+        backgroundColor: this.isDarkMode() ? '#1f1f1f' : '#ffffff',
+        borderColor: this.isDarkMode() ? '#444' : '#ccc',
+        textStyle: {
+          color: this.isDarkMode() ? '#ffffff' : '#333333'
+        } 
+      },
       grid: { 
         left: '2%',  
         right: '2%', 
@@ -164,23 +212,54 @@ export class ChartComponent implements OnInit {
       },
       xAxis: { 
         type: 'category', 
+        axisLabel: {
+        color: this.isDarkMode() ? '#ffffff' : '#333333'
+          },
+        axisLine: {
+          lineStyle: {
+            color: this.isDarkMode() ? '#444' : '#ccc'
+          }
+        },
         data: [
           format(subMonths(currentDate, 2), 'MMMM'),
           format(subMonths(currentDate, 1), 'MMMM'),
           format(currentDate, 'MMMM')
         ] 
       },
-      yAxis: { type: 'value' },
+      yAxis: { 
+        type: 'value',
+        axisLabel: {
+        color: this.themeService.isDarkMode() ? '#ffffff' : '#333333'
+          },
+        axisLine: {
+          lineStyle: {
+            color: this.themeService.isDarkMode() ? '#444' : '#ccc'
+          }
+        },
+      },
       series: [{
         name: 'Total Expenses',
         type: 'bar',
+        itemStyle: {
+            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+              { offset: 0, color: '#6366f1' },
+              { offset: 1, color: '#8b5cf6' }
+            ]),
+            borderRadius: [8, 8, 0, 0]
+        },
+        emphasis: {
+          itemStyle: {
+            shadowBlur: 10,
+            shadowOffsetX: 0,
+            shadowColor: 'rgba(0, 0, 0, 0.5)'
+          }
+        },
         data: [this.secondToLastMonthTotal(), this.previousMonthTotal(), this.totalAmount()],
         color: '#41cf8d'
       }]
     };
   }
   onResize() {
-      // Dynamically resize the chart when window is resized
     const chart = echarts.init(document.getElementById('chart')!);
     chart.resize();
   }

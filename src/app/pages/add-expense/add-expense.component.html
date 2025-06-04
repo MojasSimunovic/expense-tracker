@@ -1,83 +1,86 @@
-<h1 class="text-center">Add a new expense</h1>
-<form class="text-center" [formGroup]="expenseForm" (ngSubmit)="onSubmit()">
-  <div class="form-field">
-    <label for="title">Item title</label>
-    <input
-      formControlName="title"
-      id="title"
-      type="text"
-      placeholder="Item name"
-    />
-    <small
-      class="text-danger"
-      *ngIf="
-        expenseForm.get('title')?.invalid && expenseForm.get('title')?.touched
-      "
-    >
-      Please add article title!
-    </small>
-  </div>
-  <div class="form-field">
-    <label for="date">Date</label>
-    <input formControlName="date" id="date" type="date" />
-  </div>
-  <div class="form-row justify-content-between">
+<div class="container pt-8 pb-5">
+  <h1 class="text-center">Add a new expense</h1>
+  <form class="text-center" [formGroup]="expenseForm" (ngSubmit)="onSubmit()" [ngClass]="isDarkMode() ? 'bg-dark text-white' : ''">
     <div class="form-field">
-      <label for="category">Category</label>
-      <select formControlName="category" name="" id="category">
-        <option value="Groceries">Groceries</option>
-        <option value="Tech">Tech</option>
-        <option value="Clothes">Clothes</option>
-        <option value="Meals and Entertainment">Meals and Entertainment</option>
-        <option value="Cosmetics">Cosmetics</option>
-        <option value="Utilities">Utilities</option>
-        <option value="Transport">Transport</option>
-        <option value="Rent">Rent</option>
-        <option value="Unknown">Unknown</option>
-      </select>
+      <label for="title">Item title</label>
+      <input
+        formControlName="title"
+        id="title"
+        type="text"
+        placeholder="Item name"
+        [ngClass]="isDarkMode() ? 'bg-dark text-white' : ''"
+      />
       <small
         class="text-danger"
         *ngIf="
-          expenseForm.get('category')?.invalid &&
-          expenseForm.get('category')?.touched
+          expenseForm.get('title')?.invalid && expenseForm.get('title')?.touched
         "
       >
-        Please add article category!
-      </small>
-    </div>
-  </div>
-
-  <div class="form-row">
-    <div class="form-field">
-      <label for="price">Price</label>
-      <input formControlName="price" id="price" type="number" />
-      <small
-        class="text-danger"
-        *ngIf="
-          expenseForm.get('price')?.invalid && expenseForm.get('price')?.touched
-        "
-      >
-        Please add article price!
+        Please add article title!
       </small>
     </div>
     <div class="form-field">
-      <label for="quantity">Quantity</label>
-      <input formControlName="quantity" id="quantity" type="number" />
-      <small
-        class="text-danger"
-        *ngIf="
-          expenseForm.get('quantity')?.invalid &&
-          expenseForm.get('quantity')?.touched
-        "
-      >
-        Please add article quantity!
-      </small>
+      <label for="date">Date</label>
+      <input formControlName="date" id="date" type="date" [ngClass]="isDarkMode() ? 'bg-dark text-white' : ''"/>
     </div>
-  </div>
-  <div class="form-field align-items-center flex-row gap-4 align-items-center">
-    <input class="form-check-input checkbox" type="checkbox" value="" id="flexCheckDefault">    
-    <label class="mb-0" for="flexCheckDefault">Excess</label>
-  </div>
-
-  <button mat-raised-button [disabled]="!expenseForm.valid">Submit</button>
-</form>
+    <div class="form-row justify-content-between">
+      <div class="form-field">
+        <label for="category">Category</label>
+        <select formControlName="category" name="" id="category" [ngClass]="isDarkMode() ? 'bg-dark text-white' : ''">
+          <option value="Groceries">Groceries</option>
+          <option value="Tech">Tech</option>
+          <option value="Clothes">Clothes</option>
+          <option value="Meals and Entertainment">Meals and Entertainment</option>
+          <option value="Cosmetics">Cosmetics</option>
+          <option value="Utilities">Utilities</option>
+          <option value="Transport">Transport</option>
+          <option value="Rent">Rent</option>
+          <option value="Unknown">Unknown</option>
+        </select>
+        <small
+          class="text-danger"
+          *ngIf="
+            expenseForm.get('category')?.invalid &&
+            expenseForm.get('category')?.touched
+          "
+        >
+          Please add article category!
+        </small>
+      </div>
+    </div>
+  
+    <div class="form-row">
+      <div class="form-field">
+        <label for="price">Price</label>
+        <input formControlName="price" id="price" type="number" [ngClass]="isDarkMode() ? 'bg-dark text-white' : ''" />
+        <small
+          class="text-danger"
+          *ngIf="
+            expenseForm.get('price')?.invalid && expenseForm.get('price')?.touched
+          "
+        >
+          Please add article price!
+        </small>
+      </div>
+      <div class="form-field">
+        <label for="quantity">Quantity</label>
+        <input formControlName="quantity" id="quantity" type="number" [ngClass]="isDarkMode() ? 'bg-dark text-white' : ''" />
+        <small
+          class="text-danger"
+          *ngIf="
+            expenseForm.get('quantity')?.invalid &&
+            expenseForm.get('quantity')?.touched
+          "
+        >
+          Please add article quantity!
+        </small>
+      </div>
+    </div>
+    <div class="form-field align-items-center flex-row gap-4 align-items-center">
+      <input class="form-check-input checkbox" type="checkbox" value="" id="flexCheckDefault" [ngClass]="isDarkMode() ? 'bg-dark text-white' : ''">    
+      <label class="mb-0" for="flexCheckDefault">Excess</label>
+    </div>
+  
+    <button class="submit-btn" [disabled]="!expenseForm.valid">Submit</button>
+  </form>
+</div>

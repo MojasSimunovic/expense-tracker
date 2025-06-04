@@ -1,1 +1,98 @@
-<router-outlet />
+<nav class="navbar navbar-expand-lg" [ngClass]="{'bg-dark-nav text-white': isDarkMode()}">
+  <div class="container nav-container d-flex justify-content-between">
+    <div class="logo" routerLink="home">
+      <div class="logo-icon">S</div>
+        SmartTrack
+      </div>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNav"
+      aria-controls="navbarNav"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+      <ul class="navbar-nav mx-3">
+        @if(userSignal()) {
+          <li class="nav-item active">
+            <a (click)="closeNavbar()" class="nav-link" routerLink="/home" routerLinkActive="link-active"
+              >Home</a
+            >
+          </li>
+          <li class="nav-item">
+            <a
+            (click)="closeNavbar()"
+              class="nav-link"
+              routerLink="/dashboard"
+              routerLinkActive="link-active"
+            >
+              Dashboard</a
+            >
+          </li>
+          <li class="nav-item">
+            <a (click)="closeNavbar()" class="nav-link" routerLink="/qr" routerLinkActive="link-active"
+              >Scan QR</a
+            >
+          </li>
+          <li class="nav-item">
+            <a (click)="closeNavbar()" class="nav-link" routerLink="/new" routerLinkActive="link-active"
+              >Create new</a
+            >
+          </li>
+          
+          <li class="nav-item">
+            <a (click)="closeNavbar()" class="nav-link" routerLink="/bills" routerLinkActive="link-active"
+              >Scanned Bills</a
+            >
+          </li>
+          <li class="theme-toggle">
+            <div class="toggle-wrapper">
+              <input type="checkbox" id="themeToggle" class="toggle-input" [checked]="isDarkMode()"
+              (change)="toggleTheme()">
+              <label for="themeToggle" class="toggle-slider">
+                <div class="toggle-button">
+                  <svg class="sun-icon" viewBox="0 0 24 24" fill="#fbbf24" stroke="#fbbf24" stroke-width="2" stroke-linecap="round">
+                    <circle cx="12" cy="12" r="5"/>
+                    <line x1="12" y1="1" x2="12" y2="3"/>
+                    <line x1="12" y1="21" x2="12" y2="23"/>
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                    <line x1="1" y1="12" x2="3" y2="12"/>
+                    <line x1="21" y1="12" x2="23" y2="12"/>
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+                  </svg>
+                  <svg class="moon-icon" viewBox="0 0 24 24" fill="#60a5fa">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                  </svg>
+                </div>
+              </label>
+            </div>
+          </li> 
+        }
+      </ul>
+      <form class="d-flex">
+        @if(userSignal()) {
+        <button type="button" class="logout-btn " (click)="logOut()">Logout</button>
+        } @else {
+          <button type="button" class="login-btn" data-bs-toggle="modal" data-bs-target="#authModal">Login/Register</button>
+        }
+      </form>
+    </div>
+  </div>
+</nav>
+<main class="container-main" [ngClass]="{'dark-mode': isDarkMode()}">
+  <router-outlet />
+</main>
+
+<footer class="">
+  <div class="text-md-start justify-content-between py-4 px-4 px-xl-5">
+    <div class="text-white text-center mb-md-0 container">
+      Copyright ©Mojas Simunovic 2025. All rights reserved.
+    </div>
+  </div>
+</footer>

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { Expense } from '../../models/expense';
 import { MatButtonModule } from '@angular/material/button';
 import {
@@ -12,28 +12,29 @@ import {
 import { OnInit } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ExpenseService } from '../../services/expense.service';
-import { NgIf } from '@angular/common';
+import { NgClass, NgIf } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-add-expense',
-  imports: [ReactiveFormsModule, MatButtonModule, NgIf],
+  imports: [ReactiveFormsModule, MatButtonModule, NgIf,NgClass],
   templateUrl: './add-expense.component.html',
   styleUrl: './add-expense.component.css',
   standalone: true,
 })
 export class AddExpenseComponent implements OnInit {
-
   today: string = new Date().toISOString().split('T')[0];
-
   expenseForm: FormGroup = new FormGroup({});
-
-  constructor(
-    private formBuilder: FormBuilder,
-    private expenseService: ExpenseService,
-    private router: Router,
-    private activatedRoute: ActivatedRoute
-  ) {}
+  themeService = inject(AuthService);
+  formBuilder = inject(FormBuilder);
+  router = inject(Router);
+  expenseService = inject(ExpenseService);
+  activatedRoute = inject(ActivatedRoute);
+  isDarkMode = computed(() => {
+    return this.themeService.isDarkMode();
+  });
+  constructor() {}
   ngOnInit(): void {
     this.expenseForm = this.formBuilder.group({
       title: ['', Validators.required],

@@ -13,20 +13,6 @@
   white-space: nowrap !important;
 }
 
-/* Correcting selector */
-.qr-scanner-wrapper {
-  width: 100%;
-  max-width: 500px;
-  margin: 0 auto;
-}
-
-/* Fix for inner button */
-#qr-scanner__dashboard #html5-qrcode-button-camera-permission {
-  border-radius: 20px;
-  padding: 0.5em;
-}
-
-/* Fixed from SCSS to CSS */
 .form-url-input {
   max-width: 500px;
   margin: 0 auto;

@@ -1,81 +1,108 @@
-<section class="vh-100 container">
-  <div class="h-custom">
-    <div
-      class="row vh-100 d-flex justify-content-center align-items-center h-100"
-    >
-      <div class="col-md-9 col-lg-6 col-xl-5 login-container">
-        <h1 class="display-1 text-center">SmartTrack</h1>
-        <img
-          src="assets/images/pie-chart-vector.svg"
-          class="img-fluid"
-          alt="Sample image"
-        />
-      </div>
-      <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
-        <h1>Login page</h1>
-        <p>Still don't have an account? 
-         
-        </p>
-        <button [routerLink]="'/signup'" style="padding: 0;margin-bottom:2em;" class="btn btn-link">Sign up</button>
-        @if(submitError) {
-          <p class="text-danger">
-            There is no user with these credentials, please try again!
-          </p>
-        }
- 
-        <form>
-          <!-- Email input -->
-          <div data-mdb-input-init class="form-outline mb-4">
-            <input
-              type="email"
-              id="form3Example3"
-              class="form-control form-control-lg"
-              placeholder="Enter a valid email address"
-              [(ngModel)]="email"
-              #emailModel="ngModel"
-              name="email"
-              required
-              email
-            />
-          </div>
-
-          <!-- Password input -->
-          <div data-mdb-input-init class="form-outline mb-3">
-            <input
-              type="password"
-              id="form3Example4"
-              class="form-control form-control-lg"
-              placeholder="Enter password"
-              name="password"
-              [(ngModel)]="password" required
-            />
-            <label class="form-label" for="form3Example4">Password</label>
-          </div>
-
-          <div class="text-center text-lg-start mt-4 pt-2 mb-3">
-            <button
-              (click)="onSignIn()"
-              type="button"
-              data-mdb-button-init
-              data-mdb-ripple-init
-              class="btn btn-primary btn-lg"
-              style="padding-left: 2.5rem; padding-right: 2.5rem"
-            >
+<app-hero-banner></app-hero-banner>
+<div #authModal class="modal fade" id="authModal" tabindex="-1" aria-labelledby="authModalLabel" aria-hidden="true" (hidden.bs.modal)="onModalClose(form, formSignup)" >
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="custom-modal-header">
+        <div class="tabs" id="authTab" role="tablist">
+          <div class="tab-navigation">
+            <button class="tab-btn active" id="login-tab" data-bs-toggle="tab" data-bs-target="#loginTabPane" type="button" role="tab" aria-controls="loginTabPane" aria-selected="true">
               Login
             </button>
-          </div>
-        </form>
-        <button
-              (click)="signInWithGoogle()"
-              type="button"
-              data-mdb-button-init
-              data-mdb-ripple-init
-              class="btn btn-link btn-lg"
-              style="padding-left: 0; padding-right: 0"
-            >
-              Sign in with Google
+            <button class="tab-btn" id="signup-tab" data-bs-toggle="tab" data-bs-target="#signupTabPane" type="button" role="tab" aria-controls="signupTabPane" aria-selected="false">
+              Sign Up
             </button>
+          </div>
+       
+        </div>
+         <button type="button" class="close-btn ms-auto me-2" data-bs-dismiss="modal" aria-label="Close" id="auth-close" (click)="closeModal()">
+          <span class="sr-only">Close login/register modal</span>
+         </button>
+      </div>
+      <div class="modal-body pt-3">
+        <div class="tab-content" id="authTabContent">
+
+          <!-- Login Tab -->
+          <div class="tab-pane fade show active" id="loginTabPane" role="tabpanel" aria-labelledby="login-tab">
+            <div class="login-form">
+              <h2>Welcome back</h2>
+              <button class="social-btn" (click)="signInWithGoogle()">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 488 512" fill="#ea4335"><path d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 123 24.5 166.3 64.9l-67.5 64.9C258.5 52.6 94.3 116.6 94.3 256c0 86.5 69.1 156.6 153.7 156.6 98.2 0 135-70.4 140.8-106.9H248v-85.3h236.1c2.3 12.7 3.9 24.9 3.9 41.4z"/></svg>
+                Google sign in</button>
+              <div class="divider">
+                <span>or continue with email</span>
+              </div>
+              <form (submit)="onLogin()" #form="ngForm">
+                <div class="mb-3">
+                  <label for="" class="form-label">Login email</label>
+                  <input class="form-input" type="email" [(ngModel)]="registerObject.email" name="email" placeholder="Email" required #emailRef="ngModel" />
+                   <div *ngIf="emailRef.invalid && (emailRef.dirty || emailRef.touched)">
+                    <small *ngIf="emailRef.errors?.['required']">Email is required.</small>
+                    <small *ngIf="emailRef.errors?.['email']">Enter a valid email.</small>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label for="" class="form-label">Login password</label>
+                  <input class="form-input" type="password" [(ngModel)]="registerObject.password" name="password" placeholder="Password" required minlength="6" #passwordRef="ngModel"/>
+                  <div *ngIf="passwordRef.invalid && (passwordRef.dirty || passwordRef.touched)">
+                    <small *ngIf="passwordRef.errors?.['required']">Password is required.</small>
+                    <small *ngIf="passwordRef.errors?.['minlength']">
+                      Minimum length is {{ passwordRef.errors?.['minlength'].requiredLength }}
+                    </small>
+                  </div>
+                </div>
+                <div class="mb-3 d-flex justify-content-center">
+                   <button class="submit-btn" [disabled]="form.invalid">Login</button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+          <!-- Sign Up Tab -->
+          <div class="tab-pane fade" id="signupTabPane" role="tabpanel" aria-labelledby="signup-tab">
+              <div class="register-form">
+              <h2>Sign Up</h2>
+              <form (submit)="onRegister()" #formSignup="ngForm">
+                <div class="mb-3">
+                  <label for="" class="form-label">Register email address</label>
+                  <input
+                    type="email"
+                    [(ngModel)]="registerObject.email"
+                    name="registerEmail"
+                    placeholder="Email"
+                    required
+                    class="form-input"
+                    #emailSignupRef="ngModel" />
+                    <div *ngIf="emailSignupRef.invalid && (emailSignupRef.dirty || emailSignupRef.touched)">
+                      <small *ngIf="emailSignupRef.errors?.['required']">Email is required.</small>
+                      <small *ngIf="emailSignupRef.errors?.['email']">Enter a valid email.</small>
+                    </div>
+                </div>
+                <div class="mb-3">
+                  <label for="" class="form-label">Password</label>
+                  <input
+                    type="password"
+                    [(ngModel)]="registerObject.password"
+                    name="registerPassword"
+                    placeholder="Password"
+                    required
+                    class="form-input"
+                    #passwordSignupRef="ngModel"/>
+                    <div *ngIf="passwordSignupRef.invalid && (passwordSignupRef.dirty || passwordSignupRef.touched)">
+                      <small *ngIf="passwordSignupRef.errors?.['required']">Password is required.</small>
+                      <small *ngIf="passwordSignupRef.errors?.['minlength']">
+                        Minimum length is {{ passwordSignupRef.errors?.['minlength'].requiredLength }}
+                      </small>
+                    </div>
+                </div>
+                <div class="mb-3 d-flex justify-content-center">
+                  <button class="submit-btn" type="submit" [disabled]="formSignup.invalid">Register</button>
+                </div>
+              </form>
+            </div>
+          </div>
+
+        </div>
       </div>
     </div>
   </div>
-</section>
+</div>

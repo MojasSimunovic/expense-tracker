@@ -54,7 +54,9 @@ select {
   cursor: pointer;
 }
 
-
+.search-div .bg-dark::placeholder {
+  color: #f1f1f1;
+}
 
 .dp-hidden {
   width: 0;

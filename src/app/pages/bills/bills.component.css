@@ -5,6 +5,10 @@ table {
   }
 }
 
+.table-dark {
+  box-shadow: 4px 2px 8px #383737;
+}
+
 .search-div {
   display: flex;
   align-items: center;

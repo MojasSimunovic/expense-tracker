@@ -1,53 +1,59 @@
-import { Component, ElementRef, inject, OnInit, signal, TemplateRef, ViewChild } from '@angular/core';
+import { Component, computed, inject, OnInit, signal, TemplateRef, ViewChild } from '@angular/core';
 import { ZXingScannerModule } from '@zxing/ngx-scanner';
 import { ExpenseService } from '../../services/expense.service';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Expense } from '../../models/expense';
 import { Bill } from '../../models/bill';
-import { DatePipe } from '@angular/common';
+import { DatePipe, NgClass } from '@angular/common';
 import { NgbToastModule } from '@ng-bootstrap/ng-bootstrap';
 import { ToastService } from '../../services/toast.service';
 import { ToastsContainer } from '../../components/toasts-container/toasts-container.component'
 import { BarcodeFormat } from '@zxing/browser';
 import { FormsModule } from '@angular/forms';
-import { NgIf } from '@angular/common';
+import { AuthService } from '../../services/auth.service';
 
 
 @Component({
   selector: 'app-qr-scanner',
-  imports: [ZXingScannerModule, NgbToastModule, ToastsContainer,FormsModule, NgIf],
+  imports: [ZXingScannerModule, NgbToastModule, ToastsContainer,FormsModule,NgClass],
   templateUrl: './qr-scanner.component.html',
   styleUrl: './qr-scanner.component.css',
   providers: [DatePipe]
 })
 export class QrScannerComponent {
   @ViewChild('successTpl') successTpl!: TemplateRef<any>;
+  themeService = inject(AuthService);
   success: boolean = true;
   isLoader: boolean = false;
-
   datePipe = inject(DatePipe);
   http = inject(HttpClient);
   router = inject(Router);
   invoiceService = inject(ExpenseService);
   invoiceData: any[] = [];
-
   url?: string;
-
   today: any = new Date().toISOString().split('T')[0];
-
   toastService = inject(ToastService);
-
   textBetween = signal('');
-
   scannedResult: string | null = null;
-
   hasDevices: boolean = false;
   availableDevices: MediaDeviceInfo[] = [];
   selectedDevice: MediaDeviceInfo | undefined;
   sTpl!: TemplateRef<any>;
   formats: BarcodeFormat[] = [BarcodeFormat.QR_CODE];
-
+  isDarkMode = computed(() => {
+    return this.themeService.isDarkMode();
+  });
+  constraints: any = {
+    video: {
+      width: { ideal: 1280 },
+      height: { ideal: 720 },
+      facingMode: 'environment',
+      focusMode: 'continuous',
+      exposureMode: 'continuous',
+      whiteBalanceMode: 'continuous'
+    }
+  };
   onCamerasFound(devices: MediaDeviceInfo[]): void {
     this.hasDevices = true;
     this.availableDevices = devices;

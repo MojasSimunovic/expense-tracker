@@ -3,7 +3,7 @@
     @if (bills().length > 0) {
       <div class="form-group mb-3 search-div">
         <h5>Search by vendor name:</h5>
-        <input id="search-input" class="form-control" type="text" placeholder="Search..." [(ngModel)]="searchValue">
+        <input id="search-input" class="form-control" type="text" placeholder="Search..." [(ngModel)]="searchValue" [ngClass]="isDarkMode() ? 'bg-dark text-white' : ''">
       </div>
     <div class="table-responsive">
       <table class="table" [ngClass]="isDarkMode() ? 'table-dark text-white' : 'table-striped'">

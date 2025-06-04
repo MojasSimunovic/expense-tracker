@@ -10,42 +10,44 @@ import {
 import { OnInit } from '@angular/core';
 import { Expense } from '../../models/expense';
 import { ExpenseService } from '../../services/expense.service';
-import { DatePipe } from '@angular/common';
+import { DatePipe, NgClass } from '@angular/common';
 import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { Router, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { NgbCalendar, NgbDate, NgbDateParserFormatter, NgbDatepickerModule } from '@ng-bootstrap/ng-bootstrap';
 import { end, start } from '@popperjs/core';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [ NgbDatepickerModule, FormsModule, CommonModule, MatTableModule, FormsModule],
+  imports: [ NgbDatepickerModule, FormsModule, CommonModule, MatTableModule, FormsModule, NgClass],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css',
   standalone: true,
   providers: [DatePipe],
 })
 export class DashboardComponent implements OnInit {
-
-
 	calendar = inject(NgbCalendar);
 	formatter = inject(NgbDateParserFormatter);
 
+  themeService = inject(AuthService);
   currentDate = new Date();
   currentYear = this.currentDate.getFullYear();
   currentMonth = this.currentDate.getMonth(); 
-
 	hoveredDate: NgbDate | null = null;
   fromDate: NgbDate | null = new NgbDate(this.currentYear, this.currentMonth + 1, 1);
   toDate: NgbDate | null = new NgbDate(this.currentYear, this.currentMonth + 1, new Date(this.currentYear, this.currentMonth + 1, 0).getDate());
   datePipe = inject(DatePipe);
-  expenses = signal<Expense[]>([]); // Stores all expenses
-  category = signal<string>('All'); // Stores selected category
+  expenses = signal<Expense[]>([]);
+  category = signal<string>('All');
   searchInput = signal<string>('');
   changedDate = signal<Boolean>(false);
   sortedByDate = signal<boolean>(true);
   itemsToShow = signal<number>(5); 
+  isDarkMode = computed(() => {
+    return this.themeService.isDarkMode();
+  });
 
   filteredExpenses = computed(() => {
     const category = this.category();

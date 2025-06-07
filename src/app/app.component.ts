@@ -6,7 +6,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { AuthService } from './services/auth.service';
 import { User } from '@firebase/auth';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { NgClass } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -18,7 +18,8 @@ import { FormsModule } from '@angular/forms';
     MatSidenavModule,
     MatIconModule,
     MatButtonModule,
-    FormsModule,NgClass
+    FormsModule,
+    NgClass,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
@@ -33,7 +34,6 @@ export class AppComponent {
 
   constructor() {
     this.error = null;
-    console.log(this.isDarkMode())
   }
 
   closeNavbar() {
@@ -54,17 +54,18 @@ export class AppComponent {
   }
 
   logOut() {
-    this.authService.logOut().then(() => {
-    }).catch(err => console.error('Logout Error:', err));
+    this.authService
+      .logOut()
+      .then(() => {})
+      .catch((err) => console.error('Logout Error:', err));
   }
   async onLogout() {
     this.error = null;
     this.router.navigate(['login']);
     try {
-      await this.authService.logOut()
+      await this.authService.logOut();
     } catch (err: any) {
       this.error = err.message;
     }
   }
 }
-

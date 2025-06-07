@@ -1,18 +1,24 @@
 <div class="container">
-  <div class="hero">
-    <h1>Smart Expense Tracking</h1>
-    <p>Take control of your finances with intelligent tracking, beautiful insights, and seamless bill scanning</p>
-  </div>
-
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-text">
+        <h1>Smart Expense Tracking</h1>
+        <p>
+          Take control of your finances with intelligent tracking, beautiful
+          insights, and seamless bill scanning
+        </p>
+      </div>
+      <app-expense-comparison></app-expense-comparison>
+    </div>
+  </section>
 </div>
 <div class="container">
-  <div class="action-cards">
+  <section class="action-cards">
     @for(card of cards;track $index) {
-      <app-card [card]="card" [routerLink]="card.link"></app-card>
+    <app-card [card]="card" [routerLink]="card.link"></app-card>
     }
-  </div>
+  </section>
 </div>
 <div class="container">
   <app-chart></app-chart>
 </div>
-

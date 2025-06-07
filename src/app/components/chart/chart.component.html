@@ -1,14 +1,21 @@
-@if (expenses().length) {
-  <div class="pie-chart chart-item">
-    <echarts [options]="pieChartOptions" class="echart-container"></echarts>
+<section>
+  @if (expenses().length) {
+
+  <h2>Analytics</h2>
+  <div class="charts-wrap">
+    <div class="pie-chart chart-item">
+      <echarts [options]="pieChartOptions" class="echart-container"></echarts>
+    </div>
+    <div class="bar-chart chart-item">
+      <echarts
+        [options]="lineChartOptions"
+        style="width: 100%; height: 400px"
+        class="echart-container"
+      ></echarts>
+    </div>
   </div>
-  <div class="bar-chart chart-item">
-    <echarts [options]="barChartOptions" style="width: 100%; height: 400px;" class="echart-container"></echarts>
-  </div>
-} @else {
+
+  } @else {
   <h2>No expenses have been added yet</h2>
-}
-
-
-
-
+  }
+</section>

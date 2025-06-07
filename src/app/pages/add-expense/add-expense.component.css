@@ -1,17 +1,21 @@
+h1 {
+  animation: fadeInSide 0.6s forwards;
+}
+
 form {
   max-width: 600px;
   margin: 0 auto;
-  padding: 2em;
+  background: var(--glass-bg);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
   border-radius: 20px;
-  box-shadow: 3px 4px 8px lightgrey;
-  @media(max-width:600px) {
+  padding: 40px;
+  box-shadow: 0 8px 32px var(--shadow-light);
+  animation: fadeInUp 0.7s forwards;
+  @media (max-width: 600px) {
     padding-bottom: 4em;
     box-shadow: -1px 4px 8px #0000009c;
   }
-}
-
-.bg-dark {
-  box-shadow: 6px 3px 20px #383737;
 }
 
 .form-field {
@@ -39,7 +43,7 @@ select {
   display: flex;
   gap: 2em;
   flex: 1 1 auto;
-  @media(max-width:520px) {
+  @media (max-width: 520px) {
     flex-direction: column;
     gap: 0;
   }
@@ -68,7 +72,7 @@ button .mdc-button__label {
   margin-top: -0.1em;
   padding: 0.6em;
   cursor: pointer;
-  &+label {
+  & + label {
     cursor: pointer;
   }
 }

@@ -1,6 +1,11 @@
-<div class="container pt-8 pb-5">
+<div class="container">
   <h1 class="text-center">Add a new expense</h1>
-  <form class="text-center" [formGroup]="expenseForm" (ngSubmit)="onSubmit()" [ngClass]="isDarkMode() ? 'bg-dark text-white' : ''">
+  <form
+    class="text-center"
+    [formGroup]="expenseForm"
+    (ngSubmit)="onSubmit()"
+    [ngClass]="isDarkMode() ? 'bg-dark text-white' : ''"
+  >
     <div class="form-field">
       <label for="title">Item title</label>
       <input
@@ -21,16 +26,28 @@
     </div>
     <div class="form-field">
       <label for="date">Date</label>
-      <input formControlName="date" id="date" type="date" [ngClass]="isDarkMode() ? 'bg-dark text-white' : ''"/>
+      <input
+        formControlName="date"
+        id="date"
+        type="date"
+        [ngClass]="isDarkMode() ? 'bg-dark text-white' : ''"
+      />
     </div>
     <div class="form-row justify-content-between">
       <div class="form-field">
         <label for="category">Category</label>
-        <select formControlName="category" name="" id="category" [ngClass]="isDarkMode() ? 'bg-dark text-white' : ''">
+        <select
+          formControlName="category"
+          name=""
+          id="category"
+          [ngClass]="isDarkMode() ? 'bg-dark text-white' : ''"
+        >
           <option value="Groceries">Groceries</option>
           <option value="Tech">Tech</option>
           <option value="Clothes">Clothes</option>
-          <option value="Meals and Entertainment">Meals and Entertainment</option>
+          <option value="Meals and Entertainment">
+            Meals and Entertainment
+          </option>
           <option value="Cosmetics">Cosmetics</option>
           <option value="Utilities">Utilities</option>
           <option value="Transport">Transport</option>
@@ -48,15 +65,21 @@
         </small>
       </div>
     </div>
-  
+
     <div class="form-row">
       <div class="form-field">
         <label for="price">Price</label>
-        <input formControlName="price" id="price" type="number" [ngClass]="isDarkMode() ? 'bg-dark text-white' : ''" />
+        <input
+          formControlName="price"
+          id="price"
+          type="number"
+          [ngClass]="isDarkMode() ? 'bg-dark text-white' : ''"
+        />
         <small
           class="text-danger"
           *ngIf="
-            expenseForm.get('price')?.invalid && expenseForm.get('price')?.touched
+            expenseForm.get('price')?.invalid &&
+            expenseForm.get('price')?.touched
           "
         >
           Please add article price!
@@ -64,7 +87,12 @@
       </div>
       <div class="form-field">
         <label for="quantity">Quantity</label>
-        <input formControlName="quantity" id="quantity" type="number" [ngClass]="isDarkMode() ? 'bg-dark text-white' : ''" />
+        <input
+          formControlName="quantity"
+          id="quantity"
+          type="number"
+          [ngClass]="isDarkMode() ? 'bg-dark text-white' : ''"
+        />
         <small
           class="text-danger"
           *ngIf="
@@ -76,11 +104,19 @@
         </small>
       </div>
     </div>
-    <div class="form-field align-items-center flex-row gap-4 align-items-center">
-      <input class="form-check-input checkbox" type="checkbox" value="" id="flexCheckDefault" [ngClass]="isDarkMode() ? 'bg-dark text-white' : ''">    
+    <div
+      class="form-field align-items-center flex-row gap-4 align-items-center"
+    >
+      <input
+        class="form-check-input checkbox"
+        type="checkbox"
+        value=""
+        id="flexCheckDefault"
+        [ngClass]="isDarkMode() ? 'bg-dark text-white' : ''"
+      />
       <label class="mb-0" for="flexCheckDefault">Excess</label>
     </div>
-  
+
     <button class="submit-btn" [disabled]="!expenseForm.valid">Submit</button>
   </form>
 </div>

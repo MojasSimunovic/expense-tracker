@@ -1,53 +1,64 @@
-<div class="container pt-8">
+<div class="container">
   <h1 class="text-center">Scanned bills</h1>
-    @if (bills().length > 0) {
-      <div class="form-group mb-3 search-div">
-        <h5>Search by vendor name:</h5>
-        <input id="search-input" class="form-control" type="text" placeholder="Search..." [(ngModel)]="searchValue" [ngClass]="isDarkMode() ? 'bg-dark text-white' : ''">
-      </div>
-    <div class="table-responsive">
-      <table class="table" [ngClass]="isDarkMode() ? 'table-dark text-white' : 'table-striped'">
-        <thead>
-          <tr>
-            <th>
-              Date
-            </th>
-            <th>
-              Vendor
-            </th>
-            <th>
-              Link to bill
-            </th>
-            <th>
-              Actions
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-            @for(bill of filteredBills();track $index) {
-              <tr>
-                <td>
-                  <span>{{ convertTimestampToDate(bill.date) | date:'dd/MM/yy' }}</span>
-                </td>
-                <td class="vendor-td">
-                  <span>{{ bill.vendor }}</span>
-                </td>
-                <td>
-                  <a [href]="bill.url" target="_blank" class="btn btn-warning link-external">
-                    <mat-icon>link</mat-icon>
-                    Link to Bill
-                  </a>
-                </td>
-                <td>
-                  <button class="btn btn-danger" (click)="onRemoveBill(bill.id)">Remove</button>
-                </td>
-              </tr>
-            }       
-        </tbody>
-      </table>
-    </div>
-    } @else {
-      <h3 class="display-5 text-center">No bills have been scanned or added yet!</h3>
-    }
-
+  @if (bills().length > 0) {
+  <div class="form-group mb-3 search-div">
+    <h5>Search by vendor name:</h5>
+    <input
+      id="search-input"
+      class="form-control"
+      type="text"
+      placeholder="Search..."
+      [(ngModel)]="searchValue"
+      [ngClass]="isDarkMode() ? 'bg-dark text-white' : ''"
+    />
+  </div>
+  <div class="table-responsive">
+    <table
+      class="table"
+      [ngClass]="isDarkMode() ? 'table-dark text-white' : 'table-striped'"
+    >
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Vendor</th>
+          <th>Link to bill</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for(bill of filteredBills();track $index) {
+        <tr>
+          <td>
+            <span>{{
+              convertTimestampToDate(bill.date) | date : "dd/MM/yy"
+            }}</span>
+          </td>
+          <td class="vendor-td">
+            <span>{{ bill.vendor }}</span>
+          </td>
+          <td>
+            <a
+              [href]="bill.url"
+              target="_blank"
+              class="btn btn-warning link-external"
+            >
+              <mat-icon>link</mat-icon>
+              Link to Bill
+            </a>
+          </td>
+          <td>
+            <button class="btn btn-danger" (click)="onRemoveBill(bill.id)">
+              Remove
+            </button>
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+  } @else {
+  <h3 class="display-5 text-center">
+    No bills have been scanned or added yet!
+  </h3>
+  }
 </div>

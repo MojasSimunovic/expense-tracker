@@ -1,4 +1,4 @@
-<div class="container pt-8">
+<section class="container dashboard-section">
   <h1 class="text-center">Dashboard</h1>
   <div class="d-flex justify-content-between align-items-center d">
     <div class="dashboard-filters">
@@ -46,20 +46,30 @@
                 [value]="formatter.format(fromDate)"
                 (input)="fromDate = validateInput(fromDate, dpFromDate.value)"
               />
-              <button class="btn btn-outline-secondary bi bi-calendar3" (click)="datepicker.toggle()" type="button"></button>
+              <button
+                class="btn btn-outline-secondary bi bi-calendar3"
+                (click)="datepicker.toggle()"
+                type="button"
+              ></button>
             </div>
           </div>
         </form>
       </div>
       <div class="dashboard-filter">
         <h5>Filter by category:</h5>
-        <select class="form-select" (change)="setFilter($event.target)" [ngClass]="isDarkMode() ? 'bg-dark text-white' : ''">
+        <select
+          class="form-select"
+          (change)="setFilter($event.target)"
+          [ngClass]="isDarkMode() ? 'bg-dark text-white' : ''"
+        >
           <option value="All">All</option>
           <option value="Tech">Tech</option>
           <option value="Groceries">Groceries</option>
           <option value="Clothes">Clothes</option>
-          <option value="Meals and Entertainment">Meals and Entertainment</option>
-          
+          <option value="Meals and Entertainment">
+            Meals and Entertainment
+          </option>
+
           <option value="Cosmetics">Cosmetics</option>
           <option value="Utilities">Utilities</option>
           <option value="Transport">Transport</option>
@@ -70,137 +80,169 @@
       <div class="dashboard-filter">
         <div class="search-div">
           <h5>Search by name:</h5>
-          <input id="search-input" class="form-control" type="text" placeholder="Search..." [(ngModel)]="searchInput" [ngClass]="isDarkMode() ? 'bg-dark text-white' : ''" />
+          <input
+            id="search-input"
+            class="form-control"
+            type="text"
+            placeholder="Search..."
+            [(ngModel)]="searchInput"
+            [ngClass]="isDarkMode() ? 'bg-dark text-white' : ''"
+          />
         </div>
       </div>
     </div>
   </div>
   <hr />
   @if (filteredExpenses().length > 0) {
-    <div class="table-responsive">
-      <table class="table table-hover" [ngClass]="isDarkMode() ? 'table-dark' : 'table-striped'">
-        <thead>
-          <tr>
-            <th>Excess</th>
-            <th>Date
-              <button [ngClass]="isDarkMode() ? 'text-white' : ''" class="sort-btn" (click)="sortedByDate.set(!sortedByDate())">
-                <span class="sr-only">Sort by date</span>
-                <i class="bi bi-chevron-expand"></i></button>
-            </th>
-            <th>Item title</th>
-            <th>Category</th>
-            <th>Quantity</th>
-            <th>Price</th>
-            <th>Total Price (RSD)</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          @for (expense of displayedExpenses(); track $index) {
-            <tr [ngStyle]="assignExcessStyle(expense.excess)">
-              <ng-container>
-                <td >
-                  <div class="form-check">
-                    <input class="form-check-input" [(ngModel)]="expense.excess" (change)="updateExpense(expense)" type="checkbox" value="" id="flexCheckDefault">
-                  </div>
-                </td>
-                <td>
-                  <span>{{ expense.date | date : "dd/MM/yyyy" }}</span>
-                </td>
-                <td>
-                  <span>{{ expense.title }}</span>
-                </td>
-                <td>
-                  <select class="form-select" [ngClass]="isDarkMode() ? 'bg-dark text-white' : ''" [(ngModel)]="expense.category" (change)="updateExpense(expense)">
-                    <option value="Unknown" selected hidden>{{ expense.category }}</option>
-                    <option value="Groceries">Groceries</option>
-                    <option value="Tech">Tech</option>
-                    <option value="Clothes">Clothes</option>
-                    <option value="Meals and Entertainment">Meals and Entertainment</option>
-                    <option value="Cosmetics">Cosmetics</option>
-                    <option value="Utilities">Utilities</option>
-                    <option value="Transport">Transport</option>
-                    <option value="Rent">Rent</option>
-                    <option value="Transport">Unknown</option>
-                  </select>
-                  
-                </td>
-                <td>
-                  <span>{{ expense.quantity }}</span>
-                </td>
-                <td>
-                  <span>{{ expense.price }}</span>
-                </td>
-                <td>
-                  <span>{{ expense.quantity * expense.price }}</span>
-                </td>
-    
-                <td>
-                  <button
-                    class="btn btn-sm btn-danger m-1"
-                    (click)="onDelete(expense.id)"
-                  >
-                  <span class="sr-only">Delete</span>
-                  <i class="bi bi-trash"></i>
-                  </button>
-                  <button
-                    class="btn btn-sm btn-secondary m-1"
-                    (click)="onEdit(expense)"
-                  >
-                  <span class="sr-only">Edit</span>
-                  <i class="bi bi-pencil-square"></i>
-                  </button>
-                </td>
-              </ng-container>
-            </tr>
-          }
-  
-        </tbody>
-        <tfoot [ngClass]="isDarkMode() ? '' : 'table-secondary'">
-          <tr>
-            <th scope="row">Total <span class="invisible-placeholder">amount</span></th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th>
-              <strong>{{ totalAmount() | currency: 'RSD ' }}</strong>
-            </th>
-            <th></th>
-          </tr>
-          @if (filteredUnnecessaryExpenses()) {
-            <tr>
-              <th scope="row">Total excess</th>
-              <th></th>
-              <th></th>
-              <th></th>
-              <th></th>
-              <th></th>
-              <th>
-                <strong>{{ filteredUnnecessaryExpenses() | currency: 'RSD ' }}</strong>
-              </th>
-              <th></th>
-            </tr>
-          }
-        </tfoot>
-      </table>
-    </div>
-    <div class="text-center mt-3">
-      <button 
-        class="btn btn-secondary"
-        (click)="loadMore()"
-        *ngIf="itemsToShow() < filteredExpenses().length"
-      >
-        Load More
-      </button>
-    </div>
+  <div class="table-responsive">
+    <table
+      class="table table-hover"
+      [ngClass]="isDarkMode() ? 'table-dark' : 'table-striped'"
+    >
+      <thead>
+        <tr>
+          <th>Excess</th>
+          <th>
+            Date
+            <button
+              [ngClass]="isDarkMode() ? 'text-white' : ''"
+              class="sort-btn"
+              (click)="sortedByDate.set(!sortedByDate())"
+            >
+              <span class="sr-only">Sort by date</span>
+              <i class="bi bi-chevron-expand"></i>
+            </button>
+          </th>
+          <th>Item title</th>
+          <th>Category</th>
+          <th>Quantity</th>
+          <th>Price</th>
+          <th>Total Price (RSD)</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (expense of displayedExpenses(); track $index) {
+        <tr [ngStyle]="assignExcessStyle(expense.excess)">
+          <ng-container>
+            <td>
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  [(ngModel)]="expense.excess"
+                  (change)="updateExpense(expense)"
+                  type="checkbox"
+                  value=""
+                  id="flexCheckDefault"
+                />
+              </div>
+            </td>
+            <td>
+              <span>{{ expense.date | date : "dd/MM/yyyy" }}</span>
+            </td>
+            <td>
+              <span>{{ expense.title }}</span>
+            </td>
+            <td>
+              <select
+                class="form-select"
+                [ngClass]="isDarkMode() ? 'bg-dark text-white' : ''"
+                [(ngModel)]="expense.category"
+                (change)="updateExpense(expense)"
+              >
+                <option value="Unknown" selected hidden>
+                  {{ expense.category }}
+                </option>
+                <option value="Groceries">Groceries</option>
+                <option value="Tech">Tech</option>
+                <option value="Clothes">Clothes</option>
+                <option value="Meals and Entertainment">
+                  Meals and Entertainment
+                </option>
+                <option value="Cosmetics">Cosmetics</option>
+                <option value="Utilities">Utilities</option>
+                <option value="Transport">Transport</option>
+                <option value="Rent">Rent</option>
+                <option value="Transport">Unknown</option>
+              </select>
+            </td>
+            <td>
+              <span>{{ expense.quantity }}</span>
+            </td>
+            <td>
+              <span>{{ expense.price }}</span>
+            </td>
+            <td>
+              <span>{{ expense.quantity * expense.price }}</span>
+            </td>
+
+            <td>
+              <button
+                class="btn btn-sm btn-danger m-1"
+                (click)="onDelete(expense.id)"
+              >
+                <span class="sr-only">Delete</span>
+                <i class="bi bi-trash"></i>
+              </button>
+              <button
+                class="btn btn-sm btn-secondary m-1"
+                (click)="onEdit(expense)"
+              >
+                <span class="sr-only">Edit</span>
+                <i class="bi bi-pencil-square"></i>
+              </button>
+            </td>
+          </ng-container>
+        </tr>
+        }
+      </tbody>
+      <tfoot [ngClass]="isDarkMode() ? '' : 'table-secondary'">
+        <tr>
+          <th scope="row">
+            Total <span class="invisible-placeholder">amount</span>
+          </th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th>
+            <strong>{{ totalAmount() | currency : "RSD " }}</strong>
+          </th>
+          <th></th>
+        </tr>
+        @if (filteredUnnecessaryExpenses()) {
+        <tr>
+          <th scope="row">Total excess</th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th>
+            <strong>{{
+              filteredUnnecessaryExpenses() | currency : "RSD "
+            }}</strong>
+          </th>
+          <th></th>
+        </tr>
+        }
+      </tfoot>
+    </table>
+  </div>
+  <div class="text-center mt-3">
+    <button
+      class="btn btn-secondary"
+      (click)="loadMore()"
+      *ngIf="itemsToShow() < filteredExpenses().length"
+    >
+      Load More
+    </button>
+  </div>
   } @else {
-    <div class="text-center">
-      <h3 class="mb-3">These are not the expenses you are looking for!</h3>
-      <button (click)="navigateToNew()" class="submit-btn">
-        Add expense
-      </button>
-    </div>
+  <div class="text-center">
+    <h3 class="mb-3">These are not the expenses you are looking for!</h3>
+    <button (click)="navigateToNew()" class="submit-btn">Add expense</button>
+  </div>
   }
-</div>
+</section>

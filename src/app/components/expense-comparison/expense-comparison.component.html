@@ -1,0 +1,30 @@
+<div
+  class="comparison-card"
+  [ngClass]="{
+    negative: percentageChange() > 0,
+    positive: percentageChange() < 0
+  }"
+>
+  <h3>Monthly Comparison</h3>
+  <div class="comparison-content">
+    <div class="current-month">
+      <span class="label">This Month</span>
+      <span class="amount"
+        >{{ currentMonthTotal() | number : "1.2-2" }} RSD
+      </span>
+    </div>
+    <div
+      class="percentage-indicator"
+      [ngClass]="{
+        negative: percentageChange() > 0,
+        positive: percentageChange() < 0
+      }"
+    >
+      <span class="stock-arrow">{{
+        percentageChange() > 0 ? "📈" : "📉"
+      }}</span>
+      <span class="value">{{ percentageChange() | number : "1.1-1" }}%</span>
+      <span class="label">vs last month</span>
+    </div>
+  </div>
+</div>

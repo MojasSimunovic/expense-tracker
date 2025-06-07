@@ -1,0 +1,154 @@
+:host {
+  @media (max-width: 768px) {
+    width: 100%;
+  }
+}
+.comparison-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  padding: 25px;
+  text-align: center;
+  box-shadow: 0 8px 32px var(--shadow-light);
+  position: relative;
+  min-width: 280px;
+  transition: all 0.5s ease;
+  min-height: 250px;
+  display: flex;
+  flex-direction: column;
+  animation: fadeInSide 0.65s ease;
+  overflow: hidden;
+}
+
+.comparison-card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  transition: left 0.6s;
+}
+
+.comparison-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: 16px;
+  z-index: -1;
+}
+
+.comparison-card:hover {
+  &::after {
+    left: 100%;
+  }
+}
+
+.positive::before {
+  background: linear-gradient(
+    135deg,
+    rgba(18, 160, 70, 0.555) 0%,
+    rgba(34, 197, 94, 0.16) 100%
+  );
+}
+
+.negative::before {
+  background: linear-gradient(
+    135deg,
+    rgba(239, 68, 68, 0.1) 0%,
+    rgba(239, 68, 68, 0.05) 100%
+  );
+}
+
+.percentage-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+.comparison-card.dark-mode {
+  background: #1a1a1a;
+  color: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+h3 {
+  margin: 0 0 1.5rem 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.comparison-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-top: auto;
+}
+
+.current-month {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.label {
+  font-size: 0.875rem;
+  color: #666;
+}
+
+.dark-mode .label {
+  color: #999;
+}
+
+.amount {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.percentage-change {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  border-radius: 8px;
+  background: #f5f5f5;
+}
+
+.dark-mode .percentage-change {
+  background: #2a2a2a;
+}
+
+.percentage-change.increase {
+  color: #10b981;
+}
+
+.percentage-change.decrease {
+  color: #ef4444;
+}
+
+.arrow {
+  font-size: 1.25rem;
+}
+
+.value {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.stock-arrow {
+  font-size: 1.5rem;
+  animation: pulse 2s infinite;
+}

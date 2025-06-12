@@ -1,0 +1,21 @@
+{
+  "name": "SmartTrack - Expense Tracker",
+  "short_name": "SmartTrack",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#1976d2",
+  "description": "Track your expenses easily with SmartTrack - tracking budget made simple.",
+  "icons": [
+    {
+      "src": "icons/icon-192x192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "icons/icon-512x512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ]
+}

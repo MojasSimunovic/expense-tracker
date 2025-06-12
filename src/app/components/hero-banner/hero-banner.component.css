@@ -16,6 +16,8 @@
     justify-content: space-between;
   }
   @media (max-width: 980px) {
+    padding-top: 8em;
+    min-height: fit-content;
     height: 100dvh;
     .container {
       flex-direction: column-reverse;

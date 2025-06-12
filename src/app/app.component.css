@@ -62,6 +62,12 @@ main {
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
   z-index: 100;
   transition: all 0.3s ease;
+  .container {
+    max-width: initial;
+  }
+  @media (max-width: 768px) {
+    padding: 1rem !important;
+  }
 }
 
 .bg-dark-nav {
